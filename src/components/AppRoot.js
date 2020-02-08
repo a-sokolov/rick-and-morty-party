@@ -8,9 +8,10 @@ import { CharacterNameContext } from './Context.js';
 import './AppRoot.css';
 
 function AppRoot() {
+  // Здесь будем хранить имя персонажа, введенного на форме
   const [name, setName] = React.useState("");
-
-  const handleChange = prop => event => {
+  // Событие, по которому будем сохранять результат поиска имени персонажа
+  const handleChange = (prop) => event => {
     setName(event.target.value);
   };
 
@@ -18,18 +19,17 @@ function AppRoot() {
     <div className="AppRoot">
       <TextField
         id="character-search"
-        label="Type character name"
         type="search"
         variant="outlined"
         margin="normal"
         fullWidth
         required
-        error={!(name.length > 2) && !(name.length == 0)}
-        onChange={handleChange('name')}
+        error={!(name.length > 2) && !(name.length === 0)}
+        onChange={ handleChange('name') }
         />
-       <CharacterNameContext.Provider value={ name }>
-          <Characters />
-       </CharacterNameContext.Provider>
+        <CharacterNameContext.Provider value={ name }>
+        <Characters />
+        </CharacterNameContext.Provider>
     </div>
   );
 }
