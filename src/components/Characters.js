@@ -45,33 +45,47 @@ const skeleton = require('./skeleton.jpeg');
 
 function Characters() {
   const classes = useStyles();
-  // Состяние текущего Рика и Морти (https://rickandmortyapi.com/api/character/avatar/1.jpeg)
+  // Карточи выбранных Рика и Морти
   const [rick, setRick] = useState(skeleton);
   const [morty, setMorty] = useState(skeleton);
-  // Здесь будем хранить коллекцию персонажей (id, name, image)
+  // Текущая коллекция карточек персонажей (id, name, image)
   const [list, setList] = useState([]);
-  const setCharacterList = (data) => {
-    setList(data.characters.results);
+  // Коллекция удаленных карточек персонажей, которые больше не показываем
+  const [prohibitedList, setProhibitedList] = useState([]);
+  /*
+    Функция возвращающая список, который можно отображать.
+    1. Удаляем карточки, которые были запрещены ранее;
+    2. Возвращаем коллекцию, размером не больше 6 элементов
+  */
+  const getCharacterList = () => {
+    let newList = list.slice().filter(item => {
+      const prohibitedItem = prohibitedList.find(el => {
+        return (el.image === item.image);
+      });
+      return (prohibitedItem === undefined);
+    })
+
+    return newList.slice(0, 6);
   }
+
   // Читаем имя персонажа из контекста
   const characterName = useContext(CharacterNameContext);
+  // Attention! Временное решение, чтобы отладить код (часть данных грузиться из JSON'а).
   useEffect(() => {
+    let newList = [];
     if (characterName && characterName.length > 2) {
       if ('rick'.indexOf(characterName.toLowerCase()) >= 0) {
-        setList(rickJson.default);
+        newList = rickJson.default;
       } else if ('morty'.indexOf(characterName.toLowerCase()) >= 0) {
-        setList(mortyJson.default);
+        newList = mortyJson.default;
       } else if ('beth'.indexOf(characterName.toLowerCase()) >= 0) {
-        setList(bethJson.default);
-      } else {
-        setList([]);
+        newList = bethJson.default;
       }
-    } else {
-      setList([]);
     };
+    setList(newList);
   }, [characterName]);
 
-  // Запрос поиска персонажей по имени.
+  // Запрос поиска персонажей по имени
   const GET_CHARACTERS_QUERY = gql`
     query Characters($characterName: String!) {
       characters(filter: {status: "alive", name: $characterName }) {
@@ -92,7 +106,7 @@ function Characters() {
       variables: { characterName },
       skip: !characterName,
       pollInterval: 300,
-      onCompleted: setCharacterList
+      onCompleted: { (data) => setList(data.characters.results) }
   });
   // Отображаем прогресс
   if (loading) return <CircularProgress />;
@@ -108,27 +122,40 @@ function Characters() {
         } else if (item.name.toLowerCase().indexOf('morty') >= 0) {
           setMorty(item.image);
         };
-        return item;
-      }
-    })
+      };
+      return item;
+    });
+
     console.log(`Selected card with id ${id}`);
   };
   // Если нажали на удаление карточки
   const handleDeleteCardById = (id) => {
-    setList(_.reject(list, { id: id }));
+    // Добавляем карточку в список запрещенных
+    list.map(item => {
+        if (item.id === id) {
+          setProhibitedList([...prohibitedList, item]);
+        };
+        return item;
+    });
+
+    //setList(_.reject(list, { id: id }));
     console.log(`Deleted card with id ${id}`);
   };
+
+  // Читаем список карточек, которые можно отображать
+  const listToDisplay = getCharacterList();
 
   // Отображаем список
   return (
     <div className="Characters">
-      {list && list.length > 0 ?
+      {listToDisplay && listToDisplay.length > 0 ?
         (<div className={classes.root}>
           <GridList cellHeight={120} cols={4} className={classes.gridList}>
-             {list.map(({ id, name, image }) => (
-               <GridListTile key={ id }>
+             {listToDisplay.map(({ id, name, image }) => (
+               <GridListTile key={id}>
                 <img
                   src={image}
+                  alt={skeleton}
                   onClick={ () => handleSelectCardById(id) }
                 />
                 <GridListTileBar
@@ -137,7 +164,7 @@ function Characters() {
                   actionIcon={
                     <IconButton
                         onClick={ () => handleDeleteCardById(id) }
-                        aria-label={`info about ${ name }`}
+                        aria-label={`info about ${name}`}
                         className={classes.icon}>
                       <CancelIcon />
                     </IconButton>
