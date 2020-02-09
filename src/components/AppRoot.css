@@ -2,13 +2,47 @@
   text-align: center;
   margin: auto;
   width: 80%;
-  max-width: 500px;
+  max-width: 550px;
+}
+
+.CharacterList {
+  display: table;
+  margin: auto;
 }
 
 .Party {
-  display: inline-flex;
+  display: table;
+  margin: auto;
 }
 
-.Morty {
-  padding-left: 10px;
+.CharactedCard {
+  display: inline-block;
+  position: relative;
+}
+
+.CharactedCard .CloseButton {
+  position: absolute;
+  top: 5%;
+  left: 79%;
+  background-color: white;
+  font-size: 16px;
+  padding: 0px 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
+}
+
+.CharactedCard .CloseButton:hover {
+  background-color: gray;
+}
+
+.CharactedCard .CloseButton:focus {
+  border: none;
+  outline: none;
+}
+
+img {
+  margin: 2px 6px 6px 6px;
+  width: 125px;
+  height: 125px;
 }

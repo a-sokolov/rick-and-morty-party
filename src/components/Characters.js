@@ -52,6 +52,9 @@ function Characters() {
   const [list, setList] = useState([]);
   // Коллекция удаленных карточек персонажей, которые больше не показываем
   const [prohibitedList, setProhibitedList] = useState([]);
+  const setCharacetList = (data) => {
+    setList(data.characters.results);
+  };
   /*
     Функция возвращающая список, который можно отображать.
     1. Удаляем карточки, которые были запрещены ранее;
@@ -70,21 +73,22 @@ function Characters() {
 
   // Читаем имя персонажа из контекста
   const characterName = useContext(CharacterNameContext);
-  // Attention! Временное решение, чтобы отладить код (часть данных грузиться из JSON'а).
-  useEffect(() => {
-    let newList = [];
-    if (characterName && characterName.length > 2) {
-      if ('rick'.indexOf(characterName.toLowerCase()) >= 0) {
-        newList = rickJson.default;
-      } else if ('morty'.indexOf(characterName.toLowerCase()) >= 0) {
-        newList = mortyJson.default;
-      } else if ('beth'.indexOf(characterName.toLowerCase()) >= 0) {
-        newList = bethJson.default;
-      }
-    };
-    setList(newList);
-  }, [characterName]);
-
+  /*
+    // Attention! Временное решение, чтобы отладить код (часть данных грузиться из JSON'а).
+    useEffect(() => {
+      let newList = [];
+      if (characterName && characterName.length > 2) {
+        if ('rick'.indexOf(characterName.toLowerCase()) >= 0) {
+          newList = rickJson.default;
+        } else if ('morty'.indexOf(characterName.toLowerCase()) >= 0) {
+          newList = mortyJson.default;
+        } else if ('beth'.indexOf(characterName.toLowerCase()) >= 0) {
+          newList = bethJson.default;
+        }
+      };
+      setList(newList);
+    }, [characterName]);
+  */
   // Запрос поиска персонажей по имени
   const GET_CHARACTERS_QUERY = gql`
     query Characters($characterName: String!) {
@@ -101,18 +105,17 @@ function Characters() {
     }
   `;
   // Выполняем запрос
-  /*
   const { loading, error } = useQuery(GET_CHARACTERS_QUERY, {
       variables: { characterName },
       skip: !characterName,
       pollInterval: 300,
-      onCompleted: { (data) => setList(data.characters.results) }
+      onCompleted: setCharacetList,
   });
   // Отображаем прогресс
   if (loading) return <CircularProgress />;
   // Отображаем ошибку
   if (error) return <p>Error while loading data.</p>;
-  */
+
   // Если выбрали карточку
   const handleSelectCardById = (id) => {
     list.map(item => {
@@ -148,52 +151,75 @@ function Characters() {
   // Отображаем список
   return (
     <div className="Characters">
-      {listToDisplay && listToDisplay.length > 0 ?
-        (<div className={classes.root}>
-          <GridList cellHeight={120} cols={4} className={classes.gridList}>
-             {listToDisplay.map(({ id, name, image }) => (
-               <GridListTile key={id}>
-                <img
-                  src={image}
-                  alt={skeleton}
-                  onClick={ () => handleSelectCardById(id) }
-                />
-                <GridListTileBar
-                  titlePosition="top"
-                  className={classes.titleBar}
-                  actionIcon={
-                    <IconButton
-                        onClick={ () => handleDeleteCardById(id) }
-                        aria-label={`info about ${name}`}
-                        className={classes.icon}>
-                      <CancelIcon />
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-             ))}
-           </GridList>
-        </div>) : <p>No data found.</p>
-      }
+      {
+        listToDisplay && listToDisplay.length > 0 ?
+          (
+            <div className="CharacterList">
+              {
+                listToDisplay.map(({ id, image }) => (
+                  <div key={id} className="CharactedCard">
+                    <img
+                      src={image}
+                      alt={skeleton}
+                      onClick={ () => handleSelectCardById(id) }
+                    />
+                    <button
+                      className="CloseButton"
+                      onClick={ () => handleDeleteCardById(id) }>
+                      x
+                    </button>
+                  </div>
+                ))
+              }
+            </div>
+          ) : <p>No data found.</p>
+        }
       <p><b>PARTY</b></p>
       <div className="Party">
-        <div className="Rick">
+        <div className="CharactedCard">
           <img
             src={rick}
-            width={125}
-            height={120}
-            alt={skeleton}/>
+            alt={skeleton}
+          />
+          <label className="CardLabel">RICK</label>
         </div>
-        <div className="Morty">
+        <div className="CharactedCard">
           <img
             src={morty}
-            width={125}
-            height={120}
-            alt={skeleton}/>
+            alt={skeleton}
+          />
+          <label className="CardLabel">MORTY</label>
         </div>
       </div>
     </div>
   );
 };
 
+/*
+<div className={classes.root}>
+  <GridList cellHeight={120} cols={4} className={classes.gridList}>
+     {listToDisplay.map(({ id, name, image }) => (
+       <GridListTile key={id}>
+        <img
+          src={image}
+          alt={skeleton}
+          onClick={ () => handleSelectCardById(id) }
+        />
+        <GridListTileBar
+          titlePosition="top"
+          className={classes.titleBar}
+          actionIcon={
+            <IconButton
+                onClick={ () => handleDeleteCardById(id) }
+                aria-label={`info about ${name}`}
+                className={classes.icon}>
+              <CancelIcon />
+            </IconButton>
+          }
+        />
+      </GridListTile>
+     ))}
+   </GridList>
+</div>
+*/
 export default Characters;

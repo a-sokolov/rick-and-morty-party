@@ -27,8 +27,8 @@ function AppRoot() {
         error={!(name.length > 2) && !(name.length === 0)}
         onChange={ handleChange('name') }
         />
-        <CharacterNameContext.Provider value={ name }>
-        <Characters />
+        <CharacterNameContext.Provider value={name}>
+          <Characters />
         </CharacterNameContext.Provider>
     </div>
   );
