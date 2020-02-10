@@ -3,81 +3,65 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 // Material UI
-import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
-import CancelIcon from '@material-ui/icons/Cancel';
 // Context
 import { CharacterNameContext } from './Context.js';
-// Utils
-import _ from 'lodash';
+// Application components
+import CharacterCard from './CharacterCard';
+import SelectedCharacterCard from './SelectedCharacterCard.js';
 // JSON stubs for offline mode
-import * as rickJson from './json/rick.json';
-import * as mortyJson from './json/morty.json';
-import * as bethJson from './json/beth.json';
+// import * as rickJson from './json/rick.json';
+// import * as mortyJson from './json/morty.json';
+// import * as bethJson from './json/beth.json';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    overflowY: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    height: 250,
-    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-    transform: 'translateZ(0)',
-  },
-  titleBar: {
-    background: 'rgba(0,0,0,0)',
-  },
-  icon: {
-    color: 'white',
-  },
-}));
-
+// Картинка-заглушка
 const skeleton = require('./skeleton.jpeg');
 
 function Characters() {
-  const classes = useStyles();
-  // Карточи выбранных Рика и Морти
+  // Карточки указанных Рика и Морти
   const [rick, setRick] = useState(skeleton);
   const [morty, setMorty] = useState(skeleton);
   // Текущая коллекция карточек персонажей (id, name, image)
   const [list, setList] = useState([]);
   // Коллекция удаленных карточек персонажей, которые больше не показываем
   const [prohibitedList, setProhibitedList] = useState([]);
+  // Функция для инициализации списка карточек по запросу
   const setCharacetList = (data) => {
     setList(data.characters.results);
+    if (data.characters.results) {
+      console.log(`Total count is ${data.characters.results.length}.`);
+    } else {
+      console.log("Set empty list.");
+    };
   };
   /*
     Функция возвращающая список, который можно отображать.
     1. Удаляем карточки, которые были запрещены ранее;
-    2. Возвращаем коллекцию, размером не больше 6 элементов
+    2. Возвращаем коллекцию, размером не больше 6 элементов.
   */
   const getCharacterList = () => {
+    if (!list) {
+      return [];
+    };
+
     let newList = list.slice().filter(item => {
       const prohibitedItem = prohibitedList.find(el => {
         return (el.image === item.image);
       });
       return (prohibitedItem === undefined);
-    })
+    });
 
     return newList.slice(0, 6);
-  }
+  };
 
   // Читаем имя персонажа из контекста
   const characterName = useContext(CharacterNameContext);
+  const validCharacterName = (characterName && characterName.length > 2);
   /*
     // Attention! Временное решение, чтобы отладить код (часть данных грузиться из JSON'а).
     useEffect(() => {
       let newList = [];
-      if (characterName && characterName.length > 2) {
+      if (validCharacterName) {
         if ('rick'.indexOf(characterName.toLowerCase()) >= 0) {
           newList = rickJson.default;
         } else if ('morty'.indexOf(characterName.toLowerCase()) >= 0) {
@@ -89,10 +73,11 @@ function Characters() {
       setList(newList);
     }, [characterName]);
   */
+
   // Запрос поиска персонажей по имени
   const GET_CHARACTERS_QUERY = gql`
     query Characters($characterName: String!) {
-      characters(filter: {status: "alive", name: $characterName }) {
+      characters(filter: {name: $characterName }) {
         info {
           count
         }
@@ -107,10 +92,18 @@ function Characters() {
   // Выполняем запрос
   const { loading, error } = useQuery(GET_CHARACTERS_QUERY, {
       variables: { characterName },
-      skip: !characterName,
+      skip: !validCharacterName,
       pollInterval: 300,
       onCompleted: setCharacetList,
   });
+
+  // Сброс результата, если имя персонажа не валидно
+  useEffect(() => {
+    if (!validCharacterName) {
+      setList([]);
+    };
+  }, [validCharacterName]);
+
   // Отображаем прогресс
   if (loading) return <CircularProgress />;
   // Отображаем ошибку
@@ -131,9 +124,10 @@ function Characters() {
 
     console.log(`Selected card with id ${id}`);
   };
+  
   // Если нажали на удаление карточки
   const handleDeleteCardById = (id) => {
-    // Добавляем карточку в список запрещенных
+    // Добавляем карточку в список запрещенных элементов
     list.map(item => {
         if (item.id === id) {
           setProhibitedList([...prohibitedList, item]);
@@ -141,7 +135,6 @@ function Characters() {
         return item;
     });
 
-    //setList(_.reject(list, { id: id }));
     console.log(`Deleted card with id ${id}`);
   };
 
@@ -156,70 +149,26 @@ function Characters() {
           (
             <div className="CharacterList">
               {
-                listToDisplay.map(({ id, image }) => (
-                  <div key={id} className="CharactedCard">
-                    <img
-                      src={image}
-                      alt={skeleton}
-                      onClick={ () => handleSelectCardById(id) }
-                    />
-                    <button
-                      className="CloseButton"
-                      onClick={ () => handleDeleteCardById(id) }>
-                      x
-                    </button>
-                  </div>
+                listToDisplay.map(({ id, name, image }) => (
+                  <CharacterCard
+                    id={id}
+                    name={name}
+                    image={image}
+                    onSelect={ handleSelectCardById }
+                    onDelete={ handleDeleteCardById }
+                  />
                 ))
               }
             </div>
           ) : <p>No data found.</p>
         }
-      <p><b>PARTY</b></p>
+      <br/><p><b>PARTY</b></p>
       <div className="Party">
-        <div className="CharactedCard">
-          <img
-            src={rick}
-            alt={skeleton}
-          />
-          <label className="CardLabel">RICK</label>
-        </div>
-        <div className="CharactedCard">
-          <img
-            src={morty}
-            alt={skeleton}
-          />
-          <label className="CardLabel">MORTY</label>
-        </div>
+        <SelectedCharacterCard label="RICK" image={rick} skeleton={skeleton} />
+        <SelectedCharacterCard label="MORTY" image={morty} skeleton={skeleton} />
       </div>
     </div>
   );
 };
 
-/*
-<div className={classes.root}>
-  <GridList cellHeight={120} cols={4} className={classes.gridList}>
-     {listToDisplay.map(({ id, name, image }) => (
-       <GridListTile key={id}>
-        <img
-          src={image}
-          alt={skeleton}
-          onClick={ () => handleSelectCardById(id) }
-        />
-        <GridListTileBar
-          titlePosition="top"
-          className={classes.titleBar}
-          actionIcon={
-            <IconButton
-                onClick={ () => handleDeleteCardById(id) }
-                aria-label={`info about ${name}`}
-                className={classes.icon}>
-              <CancelIcon />
-            </IconButton>
-          }
-        />
-      </GridListTile>
-     ))}
-   </GridList>
-</div>
-*/
 export default Characters;

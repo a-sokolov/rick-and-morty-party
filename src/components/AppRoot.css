@@ -15,12 +15,12 @@
   margin: auto;
 }
 
-.CharactedCard {
+.CharacterCard {
   display: inline-block;
   position: relative;
 }
 
-.CharactedCard .CloseButton {
+.CharacterCard .CloseButton {
   position: absolute;
   top: 5%;
   left: 79%;
@@ -32,13 +32,20 @@
   border-radius: 15px;
 }
 
-.CharactedCard .CloseButton:hover {
+.CharacterCard .CloseButton:hover {
   background-color: gray;
 }
 
-.CharactedCard .CloseButton:focus {
+.CharacterCard .CloseButton:focus {
   border: none;
   outline: none;
+}
+
+.CardLabel {
+  position: absolute;
+  top: 65%;
+  left: 15%;
+  color: white;
 }
 
 img {
