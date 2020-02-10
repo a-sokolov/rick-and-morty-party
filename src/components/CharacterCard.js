@@ -3,7 +3,7 @@ import React from 'react';
 // Карточка персонажа, где можно вызвать событие выбора и удаления.
 const CharacterCard = ({ id, name, image, onSelect, onDelete }) => {
   return (
-    <div key={id} className="CharacterCard">
+    <div className="CharacterCard">
       <img
         src={image}
         alt={name}
