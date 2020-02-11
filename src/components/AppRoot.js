@@ -25,7 +25,7 @@ function AppRoot() {
         margin="normal"
         fullWidth
         required
-        autofocus
+        autoFocus
         autoComplete='off'
         error={!(name.length > 2) && !(name.length === 0)}
         onChange={ handleChange(this) }
