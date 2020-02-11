@@ -76,8 +76,8 @@ function Characters() {
         newList = mortyJson.default;
       } else if ('beth'.indexOf(characterName.toLowerCase()) >= 0) {
         newList = bethJson.default;
-      }
-    }
+      };
+    };
     setList(newList);
   }, [validCharacterName, characterName]);
 */
