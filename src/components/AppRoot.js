@@ -11,6 +11,7 @@ function AppRoot() {
   // Здесь будем хранить имя персонажа, введенного на форме
   const [name, setName] = useState("");
   // Событие, по которому будем сохранять результат поиска имени персонажа
+  // eslint-disable-next-line
   const handleChange = (prop) => event => {
     setName(event.target.value);
   };

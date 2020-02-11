@@ -1,0 +1,4 @@
+**/*.jpeg
+**/*.css
+App.test.js
+serviceWorker.js

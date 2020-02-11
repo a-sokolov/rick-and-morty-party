@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 // GraphQL
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks'; // eslint-disable-line no-unused-vars
+import gql from 'graphql-tag'; // eslint-disable-line no-unused-vars
 // Material UI
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'; // eslint-disable-line no-unused-vars
 // Context
 import { CharacterNameContext } from './Context.js';
 // Application components
@@ -26,13 +26,14 @@ function Characters() {
   // Коллекция удаленных карточек персонажей, которые больше не показываем
   const [prohibitedList, setProhibitedList] = useState([]);
   // Функция для инициализации списка карточек по запросу
+  // eslint-disable-next-line
   const setCharactersList = (data) => {
     setList(data.characters.results);
     if (data.characters.results) {
       console.log(`Total count is ${data.characters.results.length}.`);
     } else {
       console.log("Set empty list.");
-    };
+    }
   };
   /*
     Функция возвращающая список, который можно отображать.
@@ -42,7 +43,7 @@ function Characters() {
   const getCharactersList = () => {
     if (!list) {
       return [];
-    };
+    }
 
     let newList = list.slice().filter(item => {
       const prohibitedItem = prohibitedList.find(el => {
@@ -69,7 +70,7 @@ function Characters() {
       } else if ('beth'.indexOf(characterName.toLowerCase()) >= 0) {
         newList = bethJson.default;
       }
-    };
+    }
     setList(newList);
   }, [validCharacterName, characterName]);
 
@@ -117,8 +118,8 @@ function Characters() {
           setRick(item.image);
         } else if (item.name.toLowerCase().indexOf('morty') >= 0) {
           setMorty(item.image);
-        };
-      };
+        }
+      }
       return item;
     });
 
@@ -131,7 +132,7 @@ function Characters() {
     list.map(item => {
         if (item.id === id) {
           setProhibitedList([...prohibitedList, item]);
-        };
+        }
         return item;
     });
 
@@ -169,6 +170,6 @@ function Characters() {
       </div>
     </div>
   );
-};
+}
 
 export default Characters;
