@@ -1,4 +1,6 @@
 **/*.jpeg
 **/*.css
+**/*.json
 App.test.js
 serviceWorker.js
+tests/

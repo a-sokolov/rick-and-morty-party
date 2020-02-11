@@ -1,23 +1,33 @@
 import React, { useContext, useState, useEffect } from 'react';
 // GraphQL
-import { useQuery } from '@apollo/react-hooks'; // eslint-disable-line no-unused-vars
-import gql from 'graphql-tag'; // eslint-disable-line no-unused-vars
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 // Material UI
-import CircularProgress from '@material-ui/core/CircularProgress'; // eslint-disable-line no-unused-vars
+import CircularProgress from '@material-ui/core/CircularProgress';
 // Context
 import { CharacterNameContext } from './Context.js';
 // Application components
 import CharacterCard from './CharacterCard';
 import SelectedCharacterCard from './SelectedCharacterCard.js';
 // JSON stubs for offline mode
+/* eslint-disable */
 import * as rickJson from './json/rick.json';
 import * as mortyJson from './json/morty.json';
 import * as bethJson from './json/beth.json';
+/* eslint-enable */
 
 // Картинка-заглушка
 const skeleton = require('./skeleton.jpeg');
 
 function Characters() {
+  // Интервал запроса к API в миллисекундах
+  const pollInterval = 300;
+  // Читаем имя персонажа из контекста
+  const characterName = useContext(CharacterNameContext);
+  const isValidCharacterName = (name) => {
+    return (name && name.length > 2);
+  };
+
   // Карточки указанных Рика и Морти
   const [rick, setRick] = useState(skeleton);
   const [morty, setMorty] = useState(skeleton);
@@ -45,21 +55,18 @@ function Characters() {
       return [];
     }
 
-    let newList = list.slice().filter(item => {
+    const newList = list.slice().filter(item => {
       const prohibitedItem = prohibitedList.find(el => {
         return (el.image === item.image);
       });
-      return (prohibitedItem === undefined);
+      return !prohibitedItem;
     });
 
     return newList.slice(0, 6);
   };
 
-  // Читаем имя персонажа из контекста
-  const characterName = useContext(CharacterNameContext);
-  const validCharacterName = (characterName && characterName.length > 2);
-
-  // Attention! Временное решение, чтобы отладить код (часть данных грузиться из JSON'а).
+  // Attention! Временное решение, чтобы отладить код (данные грузятся из JSON'а).
+/*
   useEffect(() => {
     let newList = [];
     if (validCharacterName) {
@@ -73,8 +80,7 @@ function Characters() {
     }
     setList(newList);
   }, [validCharacterName, characterName]);
-
-/*
+*/
   // Запрос поиска персонажей по имени
   const GET_CHARACTERS_QUERY = gql`
     query Characters($characterName: String!) {
@@ -91,25 +97,30 @@ function Characters() {
     }
   `;
   // Выполняем запрос
-  const { loading, error } = useQuery(GET_CHARACTERS_QUERY, {
+  const { loading, error, startPolling, stopPolling } = useQuery(GET_CHARACTERS_QUERY, {
       variables: { characterName },
-      skip: !validCharacterName,
-      pollInterval: 300,
+      skip: !isValidCharacterName(characterName),
+      pollInterval: pollInterval,
       onCompleted: setCharactersList,
   });
 
-  // Сброс результата, если имя персонажа не валидно
   useEffect(() => {
-    if (!validCharacterName) {
+    if (isValidCharacterName(characterName)) {
+      // Имя валидно, запускаем чтение данных с интервалом 300мс
+      startPolling(pollInterval);
+    } else {
+      // Имя не валидно, останвливаем чтение данных
+      stopPolling();
+      // Сбрасываем текущий результат
       setList([]);
-    };
-  }, [validCharacterName]);
+    }
+  }, [characterName, startPolling, stopPolling]);
 
   // Отображаем прогресс
   if (loading) return <CircularProgress />;
   // Отображаем ошибку
   if (error) return <p>Error while loading data.</p>;
-*/
+
   // Если выбрали карточку
   const handleSelectCardById = (id) => {
     list.map(item => {
