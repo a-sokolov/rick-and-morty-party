@@ -19,11 +19,13 @@ function AppRoot() {
     <div className="AppRoot">
       <TextField
         id="character-search"
-        type="search"
+        type="string"
         variant="outlined"
         margin="normal"
         fullWidth
         required
+        autofocus
+        autoComplete='off'
         error={!(name.length > 2) && !(name.length === 0)}
         onChange={ handleChange(this) }
         />

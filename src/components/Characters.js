@@ -26,7 +26,7 @@ function Characters() {
   // Коллекция удаленных карточек персонажей, которые больше не показываем
   const [prohibitedList, setProhibitedList] = useState([]);
   // Функция для инициализации списка карточек по запросу
-  const setCharacterList = (data) => {
+  const setCharactersList = (data) => {
     setList(data.characters.results);
     if (data.characters.results) {
       console.log(`Total count is ${data.characters.results.length}.`);
@@ -39,7 +39,7 @@ function Characters() {
     1. Удаляем карточки, которые были запрещены ранее;
     2. Возвращаем коллекцию, размером не больше 6 элементов.
   */
-  const getCharacterList = () => {
+  const getCharactersList = () => {
     if (!list) {
       return [];
     };
@@ -94,7 +94,7 @@ function Characters() {
       variables: { characterName },
       skip: !validCharacterName,
       pollInterval: 300,
-      onCompleted: setCharacterList,
+      onCompleted: setCharactersList,
   });
 
   // Сброс результата, если имя персонажа не валидно
@@ -139,13 +139,12 @@ function Characters() {
   };
 
   // Читаем список карточек, которые можно отображать
-  const listToDisplay = getCharacterList();
+  const listToDisplay = getCharactersList();
 
-  // Отображаем список
   return (
     <div className="Characters">
       {
-        listToDisplay && listToDisplay.length > 0 ?
+        listToDisplay.length > 0 ?
           (
             <div className="CharactersList">
               {
