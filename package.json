@@ -1,7 +1,13 @@
 {
   "name": "rick-and-morty-party",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Rick and Morty party",
   "private": true,
+  "author": "Sokolov Anatoly",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/a-sokolov/rick-and-morty-party"
+  },
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",

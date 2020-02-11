@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // Material UI
 import TextField from '@material-ui/core/TextField';
 // Application components
@@ -9,7 +9,7 @@ import './AppRoot.css';
 
 function AppRoot() {
   // Здесь будем хранить имя персонажа, введенного на форме
-  const [name, setName] = React.useState("");
+  const [name, setName] = useState("");
   // Событие, по которому будем сохранять результат поиска имени персонажа
   const handleChange = (prop) => event => {
     setName(event.target.value);
@@ -25,7 +25,7 @@ function AppRoot() {
         fullWidth
         required
         error={!(name.length > 2) && !(name.length === 0)}
-        onChange={ handleChange('name') }
+        onChange={ handleChange(this) }
         />
         <CharacterNameContext.Provider value={name}>
           <Characters />
