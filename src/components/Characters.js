@@ -10,9 +10,9 @@ import { CharacterNameContext } from './Context.js';
 import CharacterCard from './CharacterCard';
 import SelectedCharacterCard from './SelectedCharacterCard.js';
 // JSON stubs for offline mode
-// import * as rickJson from './json/rick.json';
-// import * as mortyJson from './json/morty.json';
-// import * as bethJson from './json/beth.json';
+import * as rickJson from './json/rick.json';
+import * as mortyJson from './json/morty.json';
+import * as bethJson from './json/beth.json';
 
 // Картинка-заглушка
 const skeleton = require('./skeleton.jpeg');
@@ -57,23 +57,23 @@ function Characters() {
   // Читаем имя персонажа из контекста
   const characterName = useContext(CharacterNameContext);
   const validCharacterName = (characterName && characterName.length > 2);
-  /*
-    // Attention! Временное решение, чтобы отладить код (часть данных грузиться из JSON'а).
-    useEffect(() => {
-      let newList = [];
-      if (validCharacterName) {
-        if ('rick'.indexOf(characterName.toLowerCase()) >= 0) {
-          newList = rickJson.default;
-        } else if ('morty'.indexOf(characterName.toLowerCase()) >= 0) {
-          newList = mortyJson.default;
-        } else if ('beth'.indexOf(characterName.toLowerCase()) >= 0) {
-          newList = bethJson.default;
-        }
-      };
-      setList(newList);
-    }, [characterName]);
-  */
 
+  // Attention! Временное решение, чтобы отладить код (часть данных грузиться из JSON'а).
+  useEffect(() => {
+    let newList = [];
+    if (validCharacterName) {
+      if ('rick'.indexOf(characterName.toLowerCase()) >= 0) {
+        newList = rickJson.default;
+      } else if ('morty'.indexOf(characterName.toLowerCase()) >= 0) {
+        newList = mortyJson.default;
+      } else if ('beth'.indexOf(characterName.toLowerCase()) >= 0) {
+        newList = bethJson.default;
+      }
+    };
+    setList(newList);
+  }, [validCharacterName, characterName]);
+
+/*
   // Запрос поиска персонажей по имени
   const GET_CHARACTERS_QUERY = gql`
     query Characters($characterName: String!) {
@@ -108,7 +108,7 @@ function Characters() {
   if (loading) return <CircularProgress />;
   // Отображаем ошибку
   if (error) return <p>Error while loading data.</p>;
-
+*/
   // Если выбрали карточку
   const handleSelectCardById = (id) => {
     list.map(item => {
