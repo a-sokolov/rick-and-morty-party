@@ -9,7 +9,11 @@ const CharacterSelectedCard = ({ label, image, skeleton }) => {
         src={image}
         alt={label}
       />
-    {(image === skeleton) ? <label className="CardLabel">{label}</label> : null}
+    {
+      (image === skeleton) ?
+      (<label className="CardLabel">{label}</label>)
+      : null
+    }
     </div>
   );
 };

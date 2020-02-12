@@ -1,23 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 // GraphQL
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 // Material UI
 import CircularProgress from '@material-ui/core/CircularProgress';
-// Context
-import { ContextCharacterName } from '../../context/Character/Name.js';
 // Application components
-import CharacterList from '../../components/Character/List.js';
+import CharacterBoard from '../../components/Character/Board.js';
 // JSON stubs for offline mode
 import characterStub from '../../stubs/Character/Stub.js';
 
-function CharacterForm() {
+function CharacterForm({ characterName }) {
   // Флаг, что читаем данные из заглушки
   const stubMode = true;
   // Интервал запроса к API в миллисекундах
   const pollInterval = 1000;
-  // Читаем имя персонажа из контекста
-  const characterName = useContext(ContextCharacterName);
   const isValidCharacterName = (name) => {
     return (name && name.length > 2);
   };
@@ -29,9 +26,9 @@ function CharacterForm() {
   const setCharactersList = (data) => {
     setList(data.characters.results);
     if (data.characters.results) {
-      console.log(`Total count is ${data.characters.results.length}.`);
+      console.log(`Total count is ${data.characters.results.length}`);
     } else {
-      console.log("Set empty list.");
+      console.log("Set empty list");
     }
   };
 
@@ -67,7 +64,7 @@ function CharacterForm() {
       } else {
         // Имя валидно, запускаем чтение данных с интервалом 300мс
         startPolling(pollInterval);
-      };
+      }
     } else {
       // Имя не валидно, останавливаем чтение данных
       stopPolling();
@@ -81,7 +78,11 @@ function CharacterForm() {
   // Отображаем ошибку
   if (error) return <p>Error while loading data.</p>;
   // Отображаем данные
-  return <CharacterList list={ list } />;
+  return <CharacterBoard list={list} />;
 }
+  
+CharacterForm.propTypes = {
+  characterName: PropTypes.string
+};
 
 export default CharacterForm;

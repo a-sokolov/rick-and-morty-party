@@ -5,9 +5,17 @@ import CharacterSelectedCard from './SelectedCard';
 
 const CharacterParty = ({ rick, morty, skeleton  }) => {
   return (
-    <div className="Party">
-      <CharacterSelectedCard label="RICK" image={rick} skeleton={skeleton} />
-      <CharacterSelectedCard label="MORTY" image={morty} skeleton={skeleton} />
+    <div className="CharactersParty">
+      <CharacterSelectedCard
+        label="RICK"
+        image={rick}
+        skeleton={skeleton}
+      />
+      <CharacterSelectedCard
+        label="MORTY"
+        image={morty}
+        skeleton={skeleton}
+      />
     </div>
   );
 };

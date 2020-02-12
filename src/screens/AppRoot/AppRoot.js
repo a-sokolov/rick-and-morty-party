@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 // Application components
 import CharacterForm from '../Character/Form.js';
-import { ContextCharacterName } from '../../context/Character/Name.js';
 // CSS
 import './AppRoot.css';
 
@@ -30,9 +29,7 @@ function AppRoot() {
         error={!(name.length > 2) && !(name.length === 0)}
         onChange={ handleChange(this) }
         />
-        <ContextCharacterName.Provider value={name}>
-          <CharacterForm />
-        </ContextCharacterName.Provider>
+        <CharacterForm characterName={name} />
     </div>
   );
 }
