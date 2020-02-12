@@ -2,29 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Карточка персонажа, где можно вызвать событие выбора и удаления.
-const CharacterCard = ({ id, name, image, onSelect, onDelete }) => {
+const CharacterCard = ({ item, onSelect, onDelete }) => {
   return (
     <div className="CharacterCard">
       <img
-        src={image}
-        alt={name}
-        onClick={ () => onSelect(id) }
+        src={item.image}
+        alt={item.name}
+        onClick={ () => onSelect(item) }
       />
       <button
         className="CloseButton"
-        onClick={ () => onDelete(id) }>
+        onClick={ () => onDelete(item) }>
         x
       </button>
     </div>
   );
 };
 
-const { func, string } = PropTypes;
+const { string, func } = PropTypes;
 
 CharacterCard.propTypes = {
-    id: string.isRequired,
-    name: string.isRequired,
-    image: string.isRequired,
+    item: PropTypes.shape({
+      id: string.isRequired,
+      name: string.isRequited,
+      image: string.isRequired
+    }).isRequired,
     onSelect: func.isRequired,
     onDelete: func.isRequired
 };

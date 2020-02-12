@@ -1,59 +1,57 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 // Application components
 import CharacterCard from '../../components/Character/Card';
 import CharacterParty from '../../components/Character/Party.js';
 
-function CharacterList(list) {
+// Картинка-заглушка
+const skeleton = require('../../images/skeleton.jpeg');
+
+function CharacterList({ list }) {
   // Карточки указанных Рика и Морти
-  const [rick, setRick] = useState(skeleton);
-  const [morty, setMorty] = useState(skeleton);
+  const [rickImage, setRickImage] = useState(skeleton);
+  const [mortyImage, setMortyImage] = useState(skeleton);
   // Коллекция удаленных карточек персонажей, которые больше не показываем
   const [prohibitedList, setProhibitedList] = useState([]);
 
   // Если выбрали карточку
-  const handleSelectCardById = (id) => {
-    list.map(item => {
-      if (item.id === id) {
-        if (item.name.toLowerCase().indexOf('rick') >= 0) {
-          setRick(item.image);
-        } else if (item.name.toLowerCase().indexOf('morty') >= 0) {
-          setMorty(item.image);
-        }
-      }
-      return item;
-    });
-
-    console.log(`Selected card with id ${id}`);
+  const handleSelectCardByItem = (item) => {
+    if (item.name.toLowerCase().indexOf('rick') >= 0) {
+      setRickImage(item.image);
+    } else if (item.name.toLowerCase().indexOf('morty') >= 0) {
+      setMortyImage(item.image);
+    };
+    console.log(`Selected card ${item.image}`);
   };
 
   // Если нажали на удаление карточки
-  const handleDeleteCardById = (id) => {
+  const handleDeleteCardByItem = (item) => {
     // Добавляем карточку в список запрещенных элементов
-    list.map(item => {
-        if (item.id === id) {
-          setProhibitedList([...prohibitedList, item]);
-        }
-        return item;
-    });
-
-    console.log(`Deleted card with id ${id}`);
+    setProhibitedList([...prohibitedList, item]);
+    console.log(`Deleted card ${item.image}`);
   };
+
+  // Готовим данные для отображения
+  const listToDisplay = list.slice().filter(item => {
+    const prohibitedItem = prohibitedList.find(el => {
+      return (el.image === item.image);
+    });
+    return !prohibitedItem;
+  }).slice(0, 6);
 
   return (
     <div className="Characters">
       {
-        list.length > 0 ?
+        listToDisplay.length > 0 ?
           (
             <div className="CharactersList">
               {
-                list.map(({ id, name, image }) => (
+                listToDisplay.map(item => (
                   <CharacterCard
-                    key={id}
-                    id={id}
-                    name={name}
-                    image={image}
-                    onSelect={ handleSelectCardById }
-                    onDelete={ handleDeleteCardById }
+                    key={item.id}
+                    item={item}
+                    onSelect={ handleSelectCardByItem }
+                    onDelete={ handleDeleteCardByItem }
                   />
                 ))
               }
@@ -62,12 +60,23 @@ function CharacterList(list) {
         }
       <br/><p><b>PARTY</b></p>
       <CharacterParty
-        rick={rick}
-        morty={morty}
+        rick={rickImage}
+        morty={mortyImage}
         skeleton={skeleton}
       />
     </div>
   );
+};
+
+const { string } = PropTypes;
+
+CharacterList.propTypes = {
+  list: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: string.isRequired,
+      name: string.isRequited,
+      image: string.isRequired
+    }))
 };
 
 export default CharacterList;

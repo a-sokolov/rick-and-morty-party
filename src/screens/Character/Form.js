@@ -7,13 +7,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 // Context
 import { ContextCharacterName } from '../../context/Character/Name.js';
 // Application components
-import CharacterCard from '../../components/Character/Card';
-import CharacterParty from '../../components/Character/Party.js';
+import CharacterList from '../../components/Character/List.js';
 // JSON stubs for offline mode
 import characterStub from '../../stubs/Character/Stub.js';
-
-// Картинка-заглушка
-const skeleton = require('../../images/skeleton.jpeg');
 
 function CharacterForm() {
   // Флаг, что читаем данные из заглушки
@@ -26,13 +22,8 @@ function CharacterForm() {
     return (name && name.length > 2);
   };
 
-  // Карточки указанных Рика и Морти
-  const [rick, setRick] = useState(skeleton);
-  const [morty, setMorty] = useState(skeleton);
   // Текущая коллекция карточек персонажей (id, name, image)
   const [list, setList] = useState([]);
-  // Коллекция удаленных карточек персонажей, которые больше не показываем
-  const [prohibitedList, setProhibitedList] = useState([]);
   // Функция для инициализации списка карточек по запросу
   // eslint-disable-next-line
   const setCharactersList = (data) => {
@@ -42,25 +33,6 @@ function CharacterForm() {
     } else {
       console.log("Set empty list.");
     }
-  };
-  /*
-    Функция возвращающая список, который можно отображать.
-    1. Удаляем карточки, которые были запрещены ранее;
-    2. Возвращаем коллекцию, размером не больше 6 элементов.
-  */
-  const getCharactersList = () => {
-    if (!list) {
-      return [];
-    }
-
-    const newList = list.slice().filter(item => {
-      const prohibitedItem = prohibitedList.find(el => {
-        return (el.image === item.image);
-      });
-      return !prohibitedItem;
-    });
-
-    return newList.slice(0, 6);
   };
 
   // Запрос поиска персонажей по имени
@@ -78,6 +50,7 @@ function CharacterForm() {
       }
     }
   `;
+
   // Выполняем запрос
   const { loading, error, startPolling, stopPolling } = useQuery(GET_CHARACTERS_QUERY, {
       variables: { characterName },
@@ -107,68 +80,8 @@ function CharacterForm() {
   if (loading) return <CircularProgress />;
   // Отображаем ошибку
   if (error) return <p>Error while loading data.</p>;
-
-  // Если выбрали карточку
-  const handleSelectCardById = (id) => {
-    list.map(item => {
-      if (item.id === id) {
-        if (item.name.toLowerCase().indexOf('rick') >= 0) {
-          setRick(item.image);
-        } else if (item.name.toLowerCase().indexOf('morty') >= 0) {
-          setMorty(item.image);
-        }
-      }
-      return item;
-    });
-
-    console.log(`Selected card with id ${id}`);
-  };
-
-  // Если нажали на удаление карточки
-  const handleDeleteCardById = (id) => {
-    // Добавляем карточку в список запрещенных элементов
-    list.map(item => {
-        if (item.id === id) {
-          setProhibitedList([...prohibitedList, item]);
-        }
-        return item;
-    });
-
-    console.log(`Deleted card with id ${id}`);
-  };
-
-  // Читаем список карточек, которые можно отображать
-  const listToDisplay = getCharactersList();
-
-  return (
-    <div className="Characters">
-      {
-        listToDisplay.length > 0 ?
-          (
-            <div className="CharactersList">
-              {
-                listToDisplay.map(({ id, name, image }) => (
-                  <CharacterCard
-                    key={id}
-                    id={id}
-                    name={name}
-                    image={image}
-                    onSelect={ handleSelectCardById }
-                    onDelete={ handleDeleteCardById }
-                  />
-                ))
-              }
-            </div>
-          ) : <p>No data found.</p>
-        }
-      <br/><p><b>PARTY</b></p>
-      <CharacterParty
-        rick={rick}
-        morty={morty}
-        skeleton={skeleton}
-      />
-    </div>
-  );
+  // Отображаем данные
+  return <CharacterList list={ list } />;
 }
 
 export default CharacterForm;
