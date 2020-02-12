@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Компонент для отображения выбранной карточки персонажа
-const SelectedCharacterCard = ({ label, image, skeleton }) => {
+const CharacterSelectedCard = ({ label, image, skeleton }) => {
   return (
     <div className="CharacterCard">
       <img
@@ -16,10 +16,10 @@ const SelectedCharacterCard = ({ label, image, skeleton }) => {
 
 const { string } = PropTypes;
 
-SelectedCharacterCard.propTypes = {
+CharacterSelectedCard.propTypes = {
     label: string.isRequired,
     image: string.isRequired,
     skeleton: string.isRequired
 };
 
-export default SelectedCharacterCard;
+export default CharacterSelectedCard;

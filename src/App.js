@@ -3,7 +3,7 @@ import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 // Application components
-import AppRoot from './components/AppRoot.js';
+import AppRoot from './screens/AppRoot/AppRoot.js';
 
 const client = new ApolloClient({
   uri: 'https://rickandmortyapi.com/graphql',

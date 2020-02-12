@@ -5,25 +5,23 @@ import gql from 'graphql-tag';
 // Material UI
 import CircularProgress from '@material-ui/core/CircularProgress';
 // Context
-import { CharacterNameContext } from './Context.js';
+import { ContextCharacterName } from '../../context/Character/Name.js';
 // Application components
-import CharacterCard from './CharacterCard';
-import SelectedCharacterCard from './SelectedCharacterCard.js';
+import CharacterCard from '../../components/Character/Card';
+import CharacterParty from '../../components/Character/Party.js';
 // JSON stubs for offline mode
-/* eslint-disable */
-import * as rickJson from './json/rick.json';
-import * as mortyJson from './json/morty.json';
-import * as bethJson from './json/beth.json';
-/* eslint-enable */
+import characterStub from '../../stubs/Character/Stub.js';
 
 // Картинка-заглушка
-const skeleton = require('./skeleton.jpeg');
+const skeleton = require('../../images/skeleton.jpeg');
 
-function Characters() {
+function CharacterForm() {
+  // Флаг, что читаем данные из заглушки
+  const stubMode = true;
   // Интервал запроса к API в миллисекундах
-  const pollInterval = 300;
+  const pollInterval = 1000;
   // Читаем имя персонажа из контекста
-  const characterName = useContext(CharacterNameContext);
+  const characterName = useContext(ContextCharacterName);
   const isValidCharacterName = (name) => {
     return (name && name.length > 2);
   };
@@ -65,22 +63,6 @@ function Characters() {
     return newList.slice(0, 6);
   };
 
-  // Attention! Временное решение, чтобы отладить код (данные грузятся из JSON'а).
-/*
-  useEffect(() => {
-    let newList = [];
-    if (validCharacterName) {
-      if ('rick'.indexOf(characterName.toLowerCase()) >= 0) {
-        newList = rickJson.default;
-      } else if ('morty'.indexOf(characterName.toLowerCase()) >= 0) {
-        newList = mortyJson.default;
-      } else if ('beth'.indexOf(characterName.toLowerCase()) >= 0) {
-        newList = bethJson.default;
-      };
-    };
-    setList(newList);
-  }, [validCharacterName, characterName]);
-*/
   // Запрос поиска персонажей по имени
   const GET_CHARACTERS_QUERY = gql`
     query Characters($characterName: String!) {
@@ -99,22 +81,27 @@ function Characters() {
   // Выполняем запрос
   const { loading, error, startPolling, stopPolling } = useQuery(GET_CHARACTERS_QUERY, {
       variables: { characterName },
-      skip: !isValidCharacterName(characterName),
+      skip: !isValidCharacterName(characterName) || stubMode,
       pollInterval: pollInterval,
       onCompleted: setCharactersList,
   });
 
   useEffect(() => {
     if (isValidCharacterName(characterName)) {
-      // Имя валидно, запускаем чтение данных с интервалом 300мс
-      startPolling(pollInterval);
+      if (stubMode) {
+        stopPolling();
+        setList(characterStub(characterName));
+      } else {
+        // Имя валидно, запускаем чтение данных с интервалом 300мс
+        startPolling(pollInterval);
+      };
     } else {
-      // Имя не валидно, останвливаем чтение данных
+      // Имя не валидно, останавливаем чтение данных
       stopPolling();
       // Сбрасываем текущий результат
       setList([]);
     }
-  }, [characterName, startPolling, stopPolling]);
+  }, [characterName, startPolling, stopPolling, stubMode]);
 
   // Отображаем прогресс
   if (loading) return <CircularProgress />;
@@ -175,12 +162,13 @@ function Characters() {
           ) : <p>No data found.</p>
         }
       <br/><p><b>PARTY</b></p>
-      <div className="Party">
-        <SelectedCharacterCard label="RICK" image={rick} skeleton={skeleton} />
-        <SelectedCharacterCard label="MORTY" image={morty} skeleton={skeleton} />
-      </div>
+      <CharacterParty
+        rick={rick}
+        morty={morty}
+        skeleton={skeleton}
+      />
     </div>
   );
 }
 
-export default Characters;
+export default CharacterForm;
