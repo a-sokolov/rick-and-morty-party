@@ -1,8 +1,10 @@
+import PropTypes from 'prop-types';
+// JSON's
 import * as rickJson from './json/rick.json';
 import * as mortyJson from './json/morty.json';
 import * as bethJson from './json/beth.json';
 
-const characterStub = (characterName) =>  {
+function CharacterStub(characterName) {
   if ('rick'.indexOf(characterName.toLowerCase()) >= 0) {
     return rickJson.default;
   } else if ('morty'.indexOf(characterName.toLowerCase()) >= 0) {
@@ -11,6 +13,10 @@ const characterStub = (characterName) =>  {
     return bethJson.default;
   }
   return [];
+}
+
+CharacterStub.propTypes = {
+  characterName: PropTypes.string.isRequire
 };
 
-export default characterStub;
+export default CharacterStub;

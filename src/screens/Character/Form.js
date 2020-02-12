@@ -8,16 +8,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 // Application components
 import CharacterBoard from '../../components/Character/Board.js';
 // JSON stubs for offline mode
-import characterStub from '../../stubs/Character/Stub.js';
+import CharacterStub from '../../stubs/Character/Stub.js';
+// Utils
+import { isValidCharacterName } from '../../utils';
 
-function CharacterForm({ characterName }) {
+function ScreensCharacterForm({ characterName }) {
   // Флаг, что читаем данные из заглушки
   const stubMode = true;
   // Интервал запроса к API в миллисекундах
   const pollInterval = 1000;
-  const isValidCharacterName = (name) => {
-    return (name && name.length > 2);
-  };
 
   // Текущая коллекция карточек персонажей (id, name, image)
   const [list, setList] = useState([]);
@@ -60,9 +59,9 @@ function CharacterForm({ characterName }) {
     if (isValidCharacterName(characterName)) {
       if (stubMode) {
         stopPolling();
-        setList(characterStub(characterName));
+        setList(CharacterStub(characterName));
       } else {
-        // Имя валидно, запускаем чтение данных с интервалом 300мс
+        // Имя валидно, запускаем чтение данных с заданным интервалом
         startPolling(pollInterval);
       }
     } else {
@@ -80,9 +79,9 @@ function CharacterForm({ characterName }) {
   // Отображаем данные
   return <CharacterBoard list={list} />;
 }
-  
-CharacterForm.propTypes = {
-  characterName: PropTypes.string
+
+ScreensCharacterForm.propTypes = {
+  characterName: PropTypes.string.isRequired
 };
 
-export default CharacterForm;
+export default ScreensCharacterForm;

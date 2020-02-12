@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 // Application components
 import CharacterList from './List.js';
 import CharacterParty from './Party.js';
-
+// Utils
+import { removeItemsFromCollection } from '../../utils';
 // Картинка-заглушка
 const skeleton = require('../../images/skeleton.jpeg');
 
@@ -31,13 +32,11 @@ function CharacterBoard({ list }) {
     console.log(`Deleted card ${item.image}`);
   };
 
-  // Готовим данные для отображения
-  const listToDisplay = list.slice().filter(item => {
-    const prohibitedItem = prohibitedList.find(el => {
-      return (el.image === item.image);
-    });
-    return !prohibitedItem;
-  }).slice(0, 6);
+  // Готовим данные для отображения, удаляем ранее удаленные карточки
+  const listToDisplay = removeItemsFromCollection(list, prohibitedList,
+                         function(a, b) {
+                           return (a.image === b.image);
+                         }).slice(0, 6);
 
   return (
     <div className="Characters">

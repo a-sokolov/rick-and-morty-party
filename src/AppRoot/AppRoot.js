@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // Material UI
 import TextField from '@material-ui/core/TextField';
 // Application components
-import CharacterForm from '../Character/Form.js';
+import ScreensCharacterForm from '../screens/Character/Form.js';
 // CSS
 import './AppRoot.css';
 
@@ -29,7 +29,7 @@ function AppRoot() {
         error={!(name.length > 2) && !(name.length === 0)}
         onChange={ handleChange(this) }
         />
-        <CharacterForm characterName={name} />
+        <ScreensCharacterForm characterName={name} />
     </div>
   );
 }

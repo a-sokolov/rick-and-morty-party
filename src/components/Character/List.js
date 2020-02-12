@@ -26,7 +26,7 @@ CharacterList.propTypes = {
   list: PropTypes.arrayOf(
     PropTypes.shape({
       id: string.isRequired,
-      name: string.isRequited,
+      name: string.isRequired,
       image: string.isRequired
     })),
   selectCardByItem: func.isRequired,

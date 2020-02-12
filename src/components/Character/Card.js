@@ -24,7 +24,7 @@ const { string, func } = PropTypes;
 CharacterCard.propTypes = {
     item: PropTypes.shape({
       id: string.isRequired,
-      name: string.isRequited,
+      name: string.isRequired,
       image: string.isRequired
     }).isRequired,
     onSelect: func.isRequired,
