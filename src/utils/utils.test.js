@@ -41,4 +41,6 @@ test('remove items from collection', () => {
                       .length).toBe(2);
   expect(removeItemsFromCollection(originList, prohibitedList2, equals)
                       .length).toBe(3);
+  expect(removeItemsFromCollection(originList, originList, equals)
+                      .length).toBe(0);
 });
