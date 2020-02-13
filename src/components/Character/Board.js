@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // Application components
-import CharacterList from './List.js';
+import CharacterCard from './Card';
 import CharacterParty from './Party.js';
 // Utils
 import { removeItemsFromCollection } from '../../utils/utils.js';
@@ -43,11 +43,18 @@ function CharacterBoard({ list }) {
       {
         listToDisplay.length > 0 ?
           (
-            <CharacterList
-              list={listToDisplay}
-              selectCardByItem={ handleSelectCardByItem }
-              deleteCardByItem={ handleDeleteCardByItem }
-            />
+            <div className="characters-list">
+              {
+                listToDisplay.map(item => (
+                  <CharacterCard
+                    key={item.id}
+                    item={item}
+                    onSelect={ handleSelectCardByItem }
+                    onDelete={ handleDeleteCardByItem }
+                  />
+                ))
+              }
+            </div>
           ) : <p>No data found.</p>
         }
       <br/><p><b>PARTY</b></p>

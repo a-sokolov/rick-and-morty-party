@@ -18,7 +18,7 @@ function ScreensCharacterForm({ characterName }) {
   // Флаг, что читаем данные из заглушки
   const stubMode = true;
   // Интервал запроса к API в миллисекундах
-  const pollInterval = 1000;
+  const pollInterval = 300;
 
   // Текущая коллекция карточек персонажей (id, name, image)
   const [list, setList] = useState([]);
