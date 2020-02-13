@@ -16,19 +16,22 @@ import './Form.css';
 
 function ScreensCharacterForm({ characterName }) {
   // Флаг, что читаем данные из заглушки
-  const stubMode = true;
+  // eslint-disable-next-line no-undef
+  const stubMode = (process.env.REACT_APP_STUB_MODE === "true");
   // Интервал запроса к API в миллисекундах
-  const pollInterval = 300;
+  // eslint-disable-next-line no-undef
+  const pollInterval = Number(process.env.REACT_APP_APOLLO_CLIENT_POLL_INTERVAL);
 
   // Текущая коллекция карточек персонажей (id, name, image)
   const [list, setList] = useState([]);
-  // Функция для инициализации списка карточек по запросу
+  // Функция для инициализации списка карточек по results запроса
   // eslint-disable-next-line
-  const setCharactersList = (data) => {
-    setList(data.characters.results);
+  const useQueryOnCompleted = (data) => {
     if (data.characters.results) {
+      setList(data.characters.results);
       console.log(`Total count is ${data.characters.results.length}`);
     } else {
+      setList([]);
       console.log("Set empty list");
     }
   };
@@ -37,9 +40,6 @@ function ScreensCharacterForm({ characterName }) {
   const GET_CHARACTERS_QUERY = gql`
     query Characters($characterName: String!) {
       characters(filter: {name: $characterName }) {
-        info {
-          count
-        }
         results {
           id,
           name,
@@ -54,7 +54,7 @@ function ScreensCharacterForm({ characterName }) {
       variables: { characterName },
       skip: !isValidCharacterName(characterName) || stubMode,
       pollInterval: pollInterval,
-      onCompleted: setCharactersList,
+      onCompleted: useQueryOnCompleted
   });
 
   /*
@@ -79,14 +79,34 @@ function ScreensCharacterForm({ characterName }) {
       // Сбрасываем текущий результат
       setList([]);
     }
-  }, [characterName, startPolling, stopPolling, stubMode]);
+  }, [characterName, startPolling, stopPolling, pollInterval, stubMode]);
 
   // Отображаем прогресс
-  if (loading) return <CircularProgress />;
+  const ShowLoading = () => {
+    if (loading) {
+      return <CircularProgress />;
+    }
+
+    return null;
+  };
+
   // Отображаем ошибку
-  if (error) return <p>Error while loading data.</p>;
+  const ShowError = () => {
+    if (error) {
+      return <p>Error while loading data.</p>;
+    }
+
+    return null;
+  };
+
   // Отображаем данные
-  return <CharacterBoard list={list} />;
+  return (
+    <div>
+      <ShowLoading />
+      <ShowError />
+      <CharacterBoard list={list} />
+    </div>
+  );
 }
 
 ScreensCharacterForm.propTypes = {
