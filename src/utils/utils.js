@@ -1,5 +1,5 @@
 export function isValidCharacterName(name) {
-  return (name && name.length > 2);
+  return (!!name && name.length > 2);
 }
 
 export function removeItemsFromCollection(list, toRemove, equals) {
