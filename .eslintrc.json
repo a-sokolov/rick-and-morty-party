@@ -17,7 +17,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "settings": {
       "react": {
@@ -27,6 +28,8 @@
     },
     "rules": {
       "semi": "error",
-      "no-unexpected-multiline": "error"
+      "no-unexpected-multiline": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
     }
 }
