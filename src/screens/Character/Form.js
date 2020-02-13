@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 // Application components
 import CharacterBoard from '../../components/Character/Board.js';
 // JSON stubs for offline mode
-import CharacterStub from '../../stubs/Character/Stub.js';
+import { getCharacterStubByName } from '../../stubs/Character/stub.js';
 // Utils
 import { isValidCharacterName } from '../../utils/utils.js';
 // CSS
@@ -57,17 +57,24 @@ function ScreensCharacterForm({ characterName }) {
       onCompleted: setCharactersList,
   });
 
+  /*
+    Добавляем "эффект" для старта/остановки опроса сервера, в зависимости
+    от того, валидно ли введённое значение имени персонажа, и работаем ли
+    в режиме "заглушка".
+  */
   useEffect(() => {
     if (isValidCharacterName(characterName)) {
       if (stubMode) {
+        // Режим "загрушка", останвливаем опрос сервера
         stopPolling();
-        setList(CharacterStub(characterName));
+        // Читаем данные из JSON'а
+        setList(getCharacterStubByName(characterName));
       } else {
-        // Имя валидно, запускаем чтение данных с заданным интервалом
+        // Имя валидно, запускаем опрос сервера по заданному интервалу
         startPolling(pollInterval);
       }
     } else {
-      // Имя не валидно, останавливаем чтение данных
+      // Имя не валидно, останавливаем опрос сервера
       stopPolling();
       // Сбрасываем текущий результат
       setList([]);
