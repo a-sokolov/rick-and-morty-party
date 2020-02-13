@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 // Компонент для отображения выбранной карточки персонажа
 const CharacterSelectedCard = ({ label, image, skeleton }) => {
   return (
-    <div className="CharacterCard">
+    <div className="character-card">
       <img
         src={image}
         alt={label}
       />
     {
       (image === skeleton) ?
-      (<label className="CardLabel">{label}</label>)
+      (<label className="card-label">{label}</label>)
       : null
     }
     </div>

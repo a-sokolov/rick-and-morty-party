@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 // Карточка персонажа, где можно вызвать событие выбора и удаления.
 const CharacterCard = ({ item, onSelect, onDelete }) => {
   return (
-    <div className="CharacterCard">
+    <div className="character-card">
       <img
         src={item.image}
         alt={item.name}
         onClick={ () => onSelect(item) }
       />
       <button
-        className="CloseButton"
+        className="btn-close"
         onClick={ () => onDelete(item) }>
         x
       </button>

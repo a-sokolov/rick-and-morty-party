@@ -5,7 +5,7 @@ import CharacterSelectedCard from './SelectedCard';
 
 const CharacterParty = ({ rick, morty, skeleton  }) => {
   return (
-    <div className="CharactersParty">
+    <div className="characters-party">
       <CharacterSelectedCard
         label="RICK"
         image={rick}

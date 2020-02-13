@@ -10,7 +10,9 @@ import CharacterBoard from '../../components/Character/Board.js';
 // JSON stubs for offline mode
 import CharacterStub from '../../stubs/Character/Stub.js';
 // Utils
-import { isValidCharacterName } from '../../utils';
+import { isValidCharacterName } from '../../utils/utils.js';
+// CSS
+import './Form.css';
 
 function ScreensCharacterForm({ characterName }) {
   // Флаг, что читаем данные из заглушки

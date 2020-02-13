@@ -16,7 +16,7 @@ function AppRoot() {
   };
 
   return (
-    <div className="AppRoot">
+    <div className="app-root">
       <TextField
         id="character-search"
         type="string"

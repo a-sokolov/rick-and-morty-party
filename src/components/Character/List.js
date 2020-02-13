@@ -5,7 +5,7 @@ import CharacterCard from '../../components/Character/Card';
 
 const CharacterList = ({ list, selectCardByItem, deleteCardByItem }) => {
   return (
-    <div className="CharactersList">
+    <div className="characters-list">
       {
         list.map(item => (
           <CharacterCard

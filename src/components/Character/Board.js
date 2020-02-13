@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CharacterList from './List.js';
 import CharacterParty from './Party.js';
 // Utils
-import { removeItemsFromCollection } from '../../utils';
+import { removeItemsFromCollection } from '../../utils/utils.js';
 // Картинка-заглушка
 const skeleton = require('../../images/skeleton.jpeg');
 
@@ -39,7 +39,7 @@ function CharacterBoard({ list }) {
                          }).slice(0, 6);
 
   return (
-    <div className="Characters">
+    <div className="characters-board">
       {
         listToDisplay.length > 0 ?
           (
@@ -68,7 +68,7 @@ CharacterBoard.propTypes = {
       id: string.isRequired,
       name: string.isRequited,
       image: string.isRequired
-    }))
+    })).isRequired
 };
 
 export default CharacterBoard;
