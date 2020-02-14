@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // Application components
 import CharacterCard from './Card';
@@ -12,8 +12,18 @@ function CharacterBoard({ list }) {
   // Карточки указанных Рика и Морти
   const [rickImage, setRickImage] = useState(skeleton);
   const [mortyImage, setMortyImage] = useState(skeleton);
+  // Коллекция карточек, которые отображаем на экране
+  const [listToDisplay, setListToDisplay] = useState([]);
   // Коллекция удаленных карточек персонажей, которые больше не показываем
   const [prohibitedList, setProhibitedList] = useState([]);
+
+  useEffect(() => {
+    // Готовим список, удаляем отмеченные карточки и "нарезаем" до 6-ти элементов.
+    setListToDisplay(removeItemsFromCollection(list, prohibitedList,
+                       function(a, b) {
+                         return (a.image === b.image);
+                       }).slice(0, 6));
+  }, [list, prohibitedList]);
 
   // Если выбрали карточку
   const handleSelectCardByItem = (item) => {
@@ -31,12 +41,6 @@ function CharacterBoard({ list }) {
     setProhibitedList([...prohibitedList, item]);
     console.log(`Deleted card ${item.image}`);
   };
-
-  // Готовим данные для отображения, удаляем ранее удаленные карточки
-  const listToDisplay = removeItemsFromCollection(list, prohibitedList,
-                         function(a, b) {
-                           return (a.image === b.image);
-                         }).slice(0, 6);
 
   return (
     <div className="characters-board">

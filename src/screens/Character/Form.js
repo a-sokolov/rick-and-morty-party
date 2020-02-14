@@ -26,7 +26,7 @@ function ScreensCharacterForm({ characterName }) {
   const [list, setList] = useState([]);
   // Функция для инициализации списка карточек по results запроса
   // eslint-disable-next-line
-  const useQueryOnCompleted = (data) => {
+  const setQuerResultyOnCompleted = (data) => {
     if (data.characters.results) {
       setList(data.characters.results);
       console.log(`Total count is ${data.characters.results.length}`);
@@ -54,7 +54,7 @@ function ScreensCharacterForm({ characterName }) {
       variables: { characterName },
       skip: !isValidCharacterName(characterName) || stubMode,
       pollInterval: pollInterval,
-      onCompleted: useQueryOnCompleted
+      onCompleted: setQuerResultyOnCompleted
   });
 
   /*
@@ -65,7 +65,7 @@ function ScreensCharacterForm({ characterName }) {
   useEffect(() => {
     if (isValidCharacterName(characterName)) {
       if (stubMode) {
-        // Режим "загрушка", останвливаем опрос сервера
+        // Режим "загрушка", останавливаем опрос сервера
         stopPolling();
         // Читаем данные из JSON'а
         setList(getCharacterStubByName(characterName));

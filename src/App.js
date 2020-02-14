@@ -6,7 +6,7 @@ import ApolloClient from 'apollo-boost';
 import AppRoot from './AppRoot/AppRoot.js';
 
 const client = new ApolloClient({
-  uri: 'https://rickandmortyapi.com/graphql',
+  uri: process.env.REACT_APP_API_URL // eslint-disable-line no-undef
 });
 
 function App() {
