@@ -32,14 +32,14 @@ function CharacterBoard({ list }) {
     } else if (item.name.toLowerCase().indexOf('morty') >= 0) {
       setMortyImage(item.image);
     }
-    console.log(`Selected card ${item.image}`);
+    console.log(`Selected card ${item.name} ${item.image}`);
   };
 
   // Если нажали на удаление карточки
   const handleDeleteCardByItem = (item) => {
     // Добавляем карточку в список запрещенных элементов
     setProhibitedList([...prohibitedList, item]);
-    console.log(`Deleted card ${item.image}`);
+    console.log(`Deleted card ${item.name} ${item.image}`);
   };
 
   return (

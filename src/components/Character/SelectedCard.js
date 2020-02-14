@@ -6,6 +6,7 @@ const CharacterSelectedCard = ({ label, image, skeleton }) => {
   return (
     <div className="character-card">
       <img
+        className="character-img"
         src={image}
         alt={label}
       />

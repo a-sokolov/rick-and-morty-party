@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 // Application components
 import CharacterSelectedCard from './SelectedCard';
 
+// Компонент 'Party', куда помещаем выбранные карточки Рика и Морти
 const CharacterParty = ({ rick, morty, skeleton  }) => {
   return (
     <div className="characters-party">

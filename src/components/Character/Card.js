@@ -6,6 +6,7 @@ const CharacterCard = ({ item, onSelect, onDelete }) => {
   return (
     <div className="character-card">
       <img
+        className="character-img"
         src={item.image}
         alt={item.name}
         onClick={ () => onSelect(item) }
