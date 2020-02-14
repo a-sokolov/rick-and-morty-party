@@ -21,7 +21,7 @@ function ScreensCharacterForm({ characterName }) {
   const [list, setList] = useState([]);
   // Функция для инициализации списка карточек по results запроса
   // eslint-disable-next-line
-  const setQuerResultyOnCompleted = (data) => {
+  const setQueryResultOnCompleted = (data) => {
     if (data.characters.results) {
       setList(data.characters.results);
       console.log(`Total count is ${data.characters.results.length}`);
@@ -49,7 +49,7 @@ function ScreensCharacterForm({ characterName }) {
       variables: { characterName },
       skip: !isValidCharacterName(characterName),
       pollInterval: pollInterval,
-      onCompleted: setQuerResultyOnCompleted
+      onCompleted: setQueryResultOnCompleted
   });
 
   /*
