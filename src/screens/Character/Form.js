@@ -7,17 +7,12 @@ import gql from 'graphql-tag';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // Application components
 import CharacterBoard from '../../components/Character/Board.js';
-// JSON stubs for offline mode
-import { getCharacterStubByName } from '../../stubs/Character/stub.js';
 // Utils
 import { isValidCharacterName } from '../../utils/utils.js';
 // CSS
 import './Form.css';
 
 function ScreensCharacterForm({ characterName }) {
-  // Флаг, что читаем данные из заглушки
-  // eslint-disable-next-line no-undef
-  const stubMode = (process.env.REACT_APP_STUB_MODE === "true");
   // Интервал запроса к API в миллисекундах
   // eslint-disable-next-line no-undef
   const pollInterval = Number(process.env.REACT_APP_APOLLO_CLIENT_POLL_INTERVAL);
@@ -52,7 +47,7 @@ function ScreensCharacterForm({ characterName }) {
   // Выполняем запрос
   const { loading, error, startPolling, stopPolling } = useQuery(GET_CHARACTERS_QUERY, {
       variables: { characterName },
-      skip: !isValidCharacterName(characterName) || stubMode,
+      skip: !isValidCharacterName(characterName),
       pollInterval: pollInterval,
       onCompleted: setQuerResultyOnCompleted
   });
@@ -64,22 +59,15 @@ function ScreensCharacterForm({ characterName }) {
   */
   useEffect(() => {
     if (isValidCharacterName(characterName)) {
-      if (stubMode) {
-        // Режим "загрушка", останавливаем опрос сервера
-        stopPolling();
-        // Читаем данные из JSON'а
-        setList(getCharacterStubByName(characterName));
-      } else {
-        // Имя валидно, запускаем опрос сервера по заданному интервалу
-        startPolling(pollInterval);
-      }
+      // Имя валидно, запускаем опрос сервера по заданному интервалу
+      startPolling(pollInterval);
     } else {
       // Имя не валидно, останавливаем опрос сервера
       stopPolling();
       // Сбрасываем текущий результат
       setList([]);
     }
-  }, [characterName, startPolling, stopPolling, pollInterval, stubMode]);
+  }, [characterName, startPolling, stopPolling, pollInterval]);
 
   // Отображаем прогресс
   const ShowLoading = () => {
