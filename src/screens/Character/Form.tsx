@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 // GraphQL
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -11,26 +10,37 @@ import CharacterBoard from '../../components/Character/Board';
 import { getCharacterStubByName } from '../../stubs/Character';
 // Utils
 import { isValidCharacterName } from '../../utils/utils';
+// Enteties
+import { ICard } from '../../enteties/Character/Card';
 // CSS
 import './Form.css';
 
-// export interface ScreensCharacterFormProps {
-//   characterName: string
-// }
+interface IScreensCharacterForm {
+  characterName: string
+}
 
-function ScreensCharacterForm({ characterName }) {
+function ScreensCharacterForm({
+      characterName
+    }: IScreensCharacterForm) {
   // Флаг, что читаем данные из заглушки
   // eslint-disable-next-line no-undef
-  const stubMode = (process.env.REACT_APP_STUB_MODE === "true");
+  const stubMode: boolean = (process.env.REACT_APP_STUB_MODE === "true");
   // Интервал запроса к API в миллисекундах
   // eslint-disable-next-line no-undef
-  const pollInterval = Number(process.env.REACT_APP_APOLLO_CLIENT_POLL_INTERVAL);
+  const pollInterval: number = Number(process.env.REACT_APP_APOLLO_CLIENT_POLL_INTERVAL);
 
   // Текущая коллекция карточек персонажей (id, name, image)
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<Array<ICard>>([]);
+
+  interface IQueryResult {
+    characters: {
+      results?: Array<ICard>
+    }
+  }
+
   // Функция для инициализации списка карточек по results запроса
   // eslint-disable-next-line
-  const setQuerResultyOnCompleted = (data) => {
+  const setQueryResultOnCompleted = (data: IQueryResult) => {
     if (data.characters.results) {
       setList(data.characters.results);
       console.log(`Total count is ${data.characters.results.length}`);
@@ -58,7 +68,7 @@ function ScreensCharacterForm({ characterName }) {
       variables: { characterName },
       skip: !isValidCharacterName(characterName) || stubMode,
       pollInterval: pollInterval,
-      onCompleted: setQuerResultyOnCompleted
+      onCompleted: setQueryResultOnCompleted
   });
 
   /*
@@ -112,9 +122,5 @@ function ScreensCharacterForm({ characterName }) {
     </div>
   );
 }
-
-ScreensCharacterForm.propTypes = {
-  characterName: PropTypes.string.isRequired
-};
 
 export default ScreensCharacterForm;

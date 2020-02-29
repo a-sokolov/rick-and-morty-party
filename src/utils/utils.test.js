@@ -1,4 +1,4 @@
-import { isValidCharacterName, removeItemsFromCollection } from './utils.js';
+import { isValidCharacterName, removeItemsFromCollection } from './utils';
 
 test('validate character name', () => {
   expect(isValidCharacterName(null)).toBe(false);

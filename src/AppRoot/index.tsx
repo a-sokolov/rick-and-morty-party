@@ -8,10 +8,10 @@ import './AppRoot.css';
 
 function AppRoot() {
   // Здесь будем хранить имя персонажа, введенного на форме
-  const [name, setName] = useState("");
+  const [name, setName] = useState<string>("");
   // Событие, по которому будем сохранять результат поиска имени персонажа
   // eslint-disable-next-line
-  const handleChange = (prop) => event => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
@@ -27,7 +27,7 @@ function AppRoot() {
         autoFocus
         autoComplete='off'
         error={!(name.length > 2) && !(name.length === 0)}
-        onChange={ handleChange(this) }
+        onChange={ handleChange }
         />
         <ScreensCharacterForm characterName={name} />
     </div>
