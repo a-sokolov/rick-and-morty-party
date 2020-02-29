@@ -6,13 +6,17 @@ import gql from 'graphql-tag';
 // Material UI
 import CircularProgress from '@material-ui/core/CircularProgress';
 // Application components
-import CharacterBoard from '../../components/Character/Board.js';
+import CharacterBoard from '../../components/Character/Board';
 // JSON stubs for offline mode
-import { getCharacterStubByName } from '../../stubs/Character/stub.js';
+import { getCharacterStubByName } from '../../stubs/Character';
 // Utils
-import { isValidCharacterName } from '../../utils/utils.js';
+import { isValidCharacterName } from '../../utils/utils';
 // CSS
 import './Form.css';
+
+// export interface ScreensCharacterFormProps {
+//   characterName: string
+// }
 
 function ScreensCharacterForm({ characterName }) {
   // Флаг, что читаем данные из заглушки
