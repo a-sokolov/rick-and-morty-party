@@ -1,0 +1,48 @@
+.characters-list {
+  display: table;
+  margin: auto;
+}
+
+.characters-party {
+  display: table;
+  margin: auto;
+}
+
+.character-card {
+  display: inline-block;
+  position: relative;
+}
+
+.character-card .btn-close {
+  position: absolute;
+  top: 5%;
+  left: 79%;
+  background-color: white;
+  font-size: 16px;
+  padding: 0px 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
+}
+
+.character-card .btn-close:hover {
+  background-color: gray;
+}
+
+.character-card .btn-close:focus {
+  border: none;
+  outline: none;
+}
+
+.card-label {
+  position: absolute;
+  top: 65%;
+  left: 15%;
+  color: white;
+}
+
+img {
+  margin: 2px 6px 6px 6px;
+  width: 125px;
+  height: 125px;
+}

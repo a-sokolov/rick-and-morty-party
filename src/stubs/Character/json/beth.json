@@ -1,0 +1,27 @@
+[
+  {
+    "id": "4",
+    "name": "Beth Smith",
+    "image": "https://rickandmortyapi.com/api/character/avatar/4.jpeg"
+  },
+  {
+    "id": "36",
+    "name": "Beta-Seven",
+    "image": "https://rickandmortyapi.com/api/character/avatar/36.jpeg"
+  },
+  {
+    "id": "37",
+    "name": "Beth Sanchez",
+    "image": "https://rickandmortyapi.com/api/character/avatar/37.jpeg"
+  },
+  {
+    "id": "38",
+    "name": "Beth Smith",
+    "image": "https://rickandmortyapi.com/api/character/avatar/38.jpeg"
+  },
+  {
+    "id": "39",
+    "name": "Beth Smith",
+    "image": "https://rickandmortyapi.com/api/character/avatar/39.jpeg"
+  }
+]
