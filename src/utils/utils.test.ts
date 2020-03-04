@@ -5,34 +5,37 @@ test('validate character name', () => {
   expect(isValidCharacterName('')).toBe(false);
   expect(isValidCharacterName('RI')).toBe(false);
   expect(isValidCharacterName('RIC')).toBe(true);
-  expect(isValidCharacterName(0)).toBe(false);
-  expect(isValidCharacterName(1)).toBe(false);
 });
 
 test('remove items from collection', () => {
-  let originList = [];
-  for(let i = 0; i < 3; i++) {
+  interface ITestCollectionItem {
+    id: number,
+    name: string
+  }
+
+  let originList = <Array<ITestCollectionItem>>[];
+  for(let i: number = 0; i < 3; i++) {
     originList[i] = {
       id: i,
       name: `Item ${i}`
     };
   }
 
-  const prohibitedList1 = [
+  const prohibitedList1: [ITestCollectionItem] = [
     {
       id: 1,
       name: "Item 1"
     }
   ];
 
-  const prohibitedList2 = [
+  const prohibitedList2: [ITestCollectionItem] = [
     {
       id: 4,
       name: "Item 4"
     }
   ];
 
-  const equals = function (a, b) {
+  const equals = function(a: ITestCollectionItem, b: ITestCollectionItem) {
     return (a.id === b.id);
   };
 

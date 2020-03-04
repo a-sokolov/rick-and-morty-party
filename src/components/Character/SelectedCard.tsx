@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface ICharacterSelectedCard {
+export interface ICharacterSelectedCard {
   label: string,
   image: string,
   skeleton: string
