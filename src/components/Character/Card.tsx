@@ -1,6 +1,7 @@
 import React from 'react';
 // Entities
 import { ICard } from '../../enteties/Character/Card';
+import Cross from '../../images/cross.svg';
 
 interface ICharacterCard {
   item: ICard,
@@ -13,18 +14,20 @@ const CharacterCard = ({
       item, onSelect, onDelete
     }: ICharacterCard) => {
   return (
-    <div className="character-card">
-      <img
-        src={item.image}
-        alt={item.name}
-        onClick={ () => onSelect(item) }
-      />
-      <button
-        className="btn-close"
-        onClick={ () => onDelete(item) }>
-        x
-      </button>
-    </div>
+    <tr className="character-card card-size">
+        <td>
+          <img className="card-size"
+            src={item.image}
+            alt={item.name}
+            onClick={ () => onSelect(item) }
+          />
+          <div className="btn-close" onClick={() => onDelete(item)}>
+              <object className="btn-close-image" type="image/svg+xml"
+                  data={Cross}>Your browser does not support SVGs
+              </object>
+          </div>
+        </td>
+    </tr>
   );
 };
 

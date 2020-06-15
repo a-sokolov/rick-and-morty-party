@@ -11,16 +11,12 @@ const CharacterSelectedCard = ({
       label, image, skeleton
     }: ICharacterSelectedCard) => {
   return (
-    <div className="character-card">
+    <div className="character-card card-size">
       <img
         src={image}
         alt={label}
       />
-    {
-      (image === skeleton) ?
-      (<label className="card-label">{label}</label>)
-      : null
-    }
+    { image === skeleton && <div className="card-label">{label}</div> }
     </div>
   );
 };

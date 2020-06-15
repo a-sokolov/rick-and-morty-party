@@ -54,21 +54,23 @@ function CharacterBoard({
       {
         listToDisplay.length > 0 ?
           (
-            <div className="characters-list">
-              {
-                listToDisplay.map(item => (
-                  <CharacterCard
-                    key={item.id}
-                    item={item}
-                    onSelect={ handleSelectCardByItem }
-                    onDelete={ handleDeleteCardByItem }
-                  />
-                ))
-              }
-            </div>
+            <table className="characters-list">
+                <tbody>
+                  {
+                    listToDisplay.map(item => (
+                      <CharacterCard
+                        key={item.id}
+                        item={item}
+                        onSelect={ handleSelectCardByItem }
+                        onDelete={ handleDeleteCardByItem }
+                      />
+                    ))
+                  }
+                </tbody>
+            </table>
           ) : <p>No data found.</p>
         }
-      <br/><p><b>PARTY</b></p>
+      <p className="party-header"><b>PARTY</b></p>
       <CharacterParty
         rick={rickImage}
         morty={mortyImage}

@@ -1,48 +1,110 @@
+/* Общие размеры приложения. */
+.app-root {
+  text-align: center;
+  margin: auto;
+  width: 810px;
+}
+
+/* Задаем стиль для ввода имени персонажа. */
+#character-search {
+  font-weight: 300;
+  font-size: 30px;
+  text-transform: uppercase;
+  width: inherit;
+  height: 80px;
+  padding-left: 30px;
+  padding-right: 30px;
+  box-sizing: border-box;
+  margin-top: 30px;
+}
+
+/* Блок результата поиска по имени персонажа. */
 .characters-list {
-  display: table;
-  margin: auto;
+  display: grid;
+  border-spacing: 0;
 }
 
-.characters-party {
-  display: table;
-  margin: auto;
+/* Задаем отступы для элементов таблицы.  */
+.characters-list tr {
+  margin-right: 30px;
+  margin-top: 30px;
 }
 
+/* Убираем внутренние отступы у td элемента таблицы. */
+.characters-list tr > td {
+  padding: 0;
+}
+
+/* Убираем отступ справа у последнего элемента поиска. */
+.characters-list tr:last-child {
+  margin-right: 0;
+}
+
+/* Убираем отступ у 4-го элемента поиска. */
+.characters-list tr:nth-child(4) {
+  margin-right: 0;
+}
+
+/* У последнего элемента "Вечеринка", добавляем отступ справа. */
+.characters-party div:first-child {
+  margin-right: 30px;
+}
+
+/* Описание карточки персонажа с фиксированным размером 125х125 пикселей и отступом справа на 5 пикселей. */
 .character-card {
   display: inline-block;
   position: relative;
 }
 
-.character-card .btn-close {
-  position: absolute;
-  top: 5%;
-  left: 79%;
-  background-color: white;
-  font-size: 16px;
-  padding: 0px 5px;
-  border: none;
-  cursor: pointer;
-  border-radius: 15px;
+.card-size {
+  width: 180px;
+  height: 220px;
 }
 
-.character-card .btn-close:hover {
+/* Описание кнопки Х, по нажатию на которую удаляем карточку персонажа. */
+.btn-close {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  top: 8px;
+  right: 8px;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  opacity: 90%;
+  width: 30px;
+  height: 30px;
+}
+
+/* При наведении на кнопку "Закрытия" карточки, меняем фон на серый. */
+.btn-close:hover {
   background-color: gray;
 }
 
-.character-card .btn-close:focus {
-  border: none;
-  outline: none;
+/* Отключаем события курсора для SVG иконки. */
+.btn-close-image {
+  pointer-events: none;
 }
 
+/* Лэйбл для пустой карточки Рика или Морти. */
 .card-label {
   position: absolute;
-  top: 65%;
-  left: 15%;
-  color: white;
+  bottom: 14px;
+  width: inherit;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  color: #FFFFFF;
+}
+
+.party-header {
+  font-weight: bold;
+  font-size: 30px;
+  margin-top: 50px;
 }
 
 img {
-  margin: 2px 6px 6px 6px;
-  width: 125px;
-  height: 125px;
+  display: block;
+  width: inherit;
+  height: inherit;
 }
