@@ -3,25 +3,22 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 // Common
-import Progress from '../../common/Progress';
+import Index from '../common/Progress';
 // Application components
-import CharacterBoard from '../../components/Character/Board';
+import CharacterBoard from './Board';
 // JSON stubs for offline mode
-import { getCharacterStubByName } from '../../stubs/Character';
+import { getCharacterStubByName } from './stub/index';
 // Utils
-import { isValidCharacterName } from '../../utils/utils';
+import { isValidCharacterName } from '../utils/utils';
 // Entities
-import { ICard } from '../../enteties/Character/Card';
+import { Card } from './Card/interfaces';
 // CSS
-import './Form.css';
-
-interface IScreensCharacterForm {
-  characterName: string
-}
+import './character.css';
+import {ScreensCharacterFormProperty} from "./interfaces";
 
 function ScreensCharacterForm({
       characterName
-    }: IScreensCharacterForm) {
+    }: ScreensCharacterFormProperty) {
   // Флаг, что читаем данные из заглушки
   // eslint-disable-next-line no-undef
   const stubMode: boolean = (process.env.REACT_APP_STUB_MODE === "true");
@@ -30,12 +27,12 @@ function ScreensCharacterForm({
   const pollInterval: number = Number(process.env.REACT_APP_APOLLO_CLIENT_POLL_INTERVAL);
 
   // Текущая коллекция карточек персонажей (id, name, image)
-  const [list, setList] = useState<Array<ICard>>([]);
+  const [list, setList] = useState<Array<Card>>([]);
   const [loadingStub, setLoadingStub] = useState<Boolean>(false);
 
   interface IQueryResult {
     characters: {
-      results?: Array<ICard>
+      results?: Array<Card>
     }
   }
 
@@ -103,7 +100,7 @@ function ScreensCharacterForm({
   // Отображаем данные
   return (
     <div>
-      { (loading || loadingStub) && <Progress /> }
+      { (loading || loadingStub) && <Index /> }
       { error && <p>Error while loading data.</p> }
       <CharacterBoard list={list} />
     </div>

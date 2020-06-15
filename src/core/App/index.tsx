@@ -3,7 +3,7 @@ import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 // Application components
-import AppRoot from './AppRoot';
+import AppRoot from '../AppRoot';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_API_URL // eslint-disable-line no-undef

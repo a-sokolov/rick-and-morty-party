@@ -1,20 +1,14 @@
 import React from 'react';
 // Entities
-import { ICard } from '../../enteties/Character/Card';
-import Cross from '../../images/cross.svg';
-
-interface ICharacterCard {
-  item: ICard,
-  onSelect: (item: ICard) => void,
-  onDelete: (item: ICard) => void
-}
+import { CharacterCardProperty } from './interfaces';
+import Cross from './img/cross.svg';
 
 // Карточка персонажа, где можно вызвать событие выбора и удаления.
 const CharacterCard = ({
       item, onSelect, onDelete
-    }: ICharacterCard) => {
+    }: CharacterCardProperty) => {
   return (
-    <tr className="character-card card-size">
+    <tr className="character-card">
         <td>
           <img className="card-size"
             src={item.image}

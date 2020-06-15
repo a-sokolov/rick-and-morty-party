@@ -1,16 +1,11 @@
 import React from 'react';
 // Application components
-import CharacterSelectedCard from './SelectedCard';
-
-interface ICharacterParty {
-  rick: string,
-  morty: string,
-  skeleton: string
-}
+import CharacterSelectedCard from '../SelectedCard';
+import {CharacterPartyProperty} from "./interfaces";
 
 const CharacterParty = ({
       rick, morty, skeleton
-    }: ICharacterParty) => {
+    }: CharacterPartyProperty) => {
   return (
     <div className="characters-party">
       <CharacterSelectedCard

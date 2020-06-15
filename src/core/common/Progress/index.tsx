@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Progress = () => {
+const Index = () => {
     return(
         <p>Loading in progress...</p>
     )
 }
 
-export default Progress;
+export default Index;

@@ -1,39 +1,36 @@
 import React, { useState, useEffect } from 'react';
 // Application components
-import CharacterCard from './Card';
-import CharacterParty from './Party';
+import CharacterCard from '../Card';
+import CharacterParty from '../Party';
 // Utils
 import { removeItemsFromCollection } from '../../utils/utils';
 // Entities
-import { ICard } from '../../enteties/Character/Card';
+import { Card } from '../Card/interfaces';
+import {CharacterBoardProperty} from "./interfaces";
 // Картинка-заглушка
-const skeleton = require('../../images/skeleton.jpeg');
-
-interface ICharacterBoard {
-  list: ICard[]
-}
+const skeleton = require('./img/skeleton.jpeg');
 
 function CharacterBoard({
       list
-    }: ICharacterBoard) {
+    }: CharacterBoardProperty) {
   // Карточки указанных Рика и Морти
   const [rickImage, setRickImage] = useState<string>(skeleton);
   const [mortyImage, setMortyImage] = useState<string>(skeleton);
   // Коллекция карточек, которые отображаем на экране
-  const [listToDisplay, setListToDisplay] = useState<Array<ICard>>([]);
+  const [listToDisplay, setListToDisplay] = useState<Array<Card>>([]);
   // Коллекция удаленных карточек персонажей, которые больше не показываем
-  const [prohibitedList, setProhibitedList] = useState<Array<ICard>>([]);
+  const [prohibitedList, setProhibitedList] = useState<Array<Card>>([]);
 
   useEffect(() => {
     // Готовим список, удаляем отмеченные карточки и "нарезаем" до 6-ти элементов.
     setListToDisplay(removeItemsFromCollection(list, prohibitedList,
-                       function(a: ICard, b: ICard) {
+                       function(a: Card, b: Card) {
                          return (a.image === b.image);
                        }).slice(0, 6));
   }, [list, prohibitedList]);
 
   // Если выбрали карточку
-  const handleSelectCardByItem = (item: ICard) => {
+  const handleSelectCardByItem = (item: Card) => {
     if (item.name.toLowerCase().indexOf('rick') >= 0) {
       setRickImage(item.image);
     } else if (item.name.toLowerCase().indexOf('morty') >= 0) {
@@ -43,7 +40,7 @@ function CharacterBoard({
   };
 
   // Если нажали на удаление карточки
-  const handleDeleteCardByItem = (item: ICard) => {
+  const handleDeleteCardByItem = (item: Card) => {
     // Добавляем карточку в список запрещенных элементов
     setProhibitedList([...prohibitedList, item]);
     console.log(`Deleted card ${item.image}`);

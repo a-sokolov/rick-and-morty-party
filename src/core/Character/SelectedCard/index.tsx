@@ -1,15 +1,10 @@
 import React from 'react';
-
-export interface ICharacterSelectedCard {
-  label: string,
-  image: string,
-  skeleton: string
-}
+import {CharacterSelectedCardProperty} from "./interfaces";
 
 // Компонент для отображения выбранной карточки персонажа
 const CharacterSelectedCard = ({
       label, image, skeleton
-    }: ICharacterSelectedCard) => {
+    }: CharacterSelectedCardProperty) => {
   return (
     <div className="character-card card-size">
       <img

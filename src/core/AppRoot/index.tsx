@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // Application components
-import ScreensCharacterForm from '../screens/Character/Form';
+import Character from '../Character';
 
 function AppRoot() {
   // Здесь будем хранить имя персонажа, введенного на форме
@@ -21,7 +21,7 @@ function AppRoot() {
         autoComplete='off'
         onChange={ handleChange }
         />
-        <ScreensCharacterForm characterName={name} />
+        <Character characterName={name} />
     </div>
   );
 }
