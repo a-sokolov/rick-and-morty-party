@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 // GraphQL
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-// Material UI
-import CircularProgress from '@material-ui/core/CircularProgress';
+// Common
+import Progress from '../../common/Progress';
 // Application components
 import CharacterBoard from '../../components/Character/Board';
 // JSON stubs for offline mode
@@ -31,6 +31,7 @@ function ScreensCharacterForm({
 
   // Текущая коллекция карточек персонажей (id, name, image)
   const [list, setList] = useState<Array<ICard>>([]);
+  const [loadingStub, setLoadingStub] = useState<Boolean>(false);
 
   interface IQueryResult {
     characters: {
@@ -82,7 +83,11 @@ function ScreensCharacterForm({
         // Режим "загрушка", останавливаем опрос сервера
         stopPolling();
         // Читаем данные из JSON'а
-        setList(getCharacterStubByName(characterName));
+        setLoadingStub(true)
+        setTimeout(() => {
+          setList(getCharacterStubByName(characterName));
+          setLoadingStub(false);
+        }, 500);
       } else {
         // Имя валидно, запускаем опрос сервера по заданному интервалу
         startPolling(pollInterval);
@@ -95,29 +100,11 @@ function ScreensCharacterForm({
     }
   }, [characterName, startPolling, stopPolling, pollInterval, stubMode]);
 
-  // Отображаем прогресс
-  const ShowLoading = () => {
-    if (loading) {
-      return <CircularProgress />;
-    }
-
-    return null;
-  };
-
-  // Отображаем ошибку
-  const ShowError = () => {
-    if (error) {
-      return <p>Error while loading data.</p>;
-    }
-
-    return null;
-  };
-
   // Отображаем данные
   return (
     <div>
-      <ShowLoading />
-      <ShowError />
+      { (loading || loadingStub) && <Progress /> }
+      { error && <p>Error while loading data.</p> }
       <CharacterBoard list={list} />
     </div>
   );
