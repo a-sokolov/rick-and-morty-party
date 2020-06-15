@@ -4,7 +4,7 @@ import CharacterCard from './Card';
 import CharacterParty from './Party';
 // Utils
 import { removeItemsFromCollection } from '../../utils/utils';
-// Enteties
+// Entities
 import { ICard } from '../../enteties/Character/Card';
 // Картинка-заглушка
 const skeleton = require('../../images/skeleton.jpeg');

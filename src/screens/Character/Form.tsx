@@ -10,7 +10,7 @@ import CharacterBoard from '../../components/Character/Board';
 import { getCharacterStubByName } from '../../stubs/Character';
 // Utils
 import { isValidCharacterName } from '../../utils/utils';
-// Enteties
+// Entities
 import { ICard } from '../../enteties/Character/Card';
 // CSS
 import './Form.css';

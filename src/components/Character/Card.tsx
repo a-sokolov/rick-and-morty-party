@@ -1,5 +1,5 @@
 import React from 'react';
-// Enteties
+// Entities
 import { ICard } from '../../enteties/Character/Card';
 
 interface ICharacterCard {
