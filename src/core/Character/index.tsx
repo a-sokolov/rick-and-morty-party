@@ -1,6 +1,4 @@
 import React, {useState, useEffect} from 'react';
-// GraphQL
-import {useQuery} from '@apollo/react-hooks';
 // Common
 import Index from '../common/Progress';
 // Application components
@@ -13,9 +11,9 @@ import {isValidCharacterName} from '../utils';
 import {Card} from './Card/interfaces';
 import {
   CharactersResultData,
-  getCharactersByNameQuery,
   ScreensCharacterFormProperty
 } from './interfaces';
+import {useCharactersByNameQuery} from './gql/interfaces';
 
 function ScreensCharacterForm({characterName}: ScreensCharacterFormProperty) {
   // Флаг, что читаем данные из заглушки
@@ -40,12 +38,16 @@ function ScreensCharacterForm({characterName}: ScreensCharacterFormProperty) {
   };
 
   // Выполняем запрос
-  const { loading, error, startPolling, stopPolling } = useQuery(getCharactersByNameQuery, {
-      variables: { characterName },
-      skip: !isValidCharacterName(characterName) || stubMode,
-      pollInterval: pollInterval,
-      onCompleted: setQueryResultOnCompleted
-  });
+  const queryOptions = {
+    variables: {characterName},
+    skip: !isValidCharacterName(characterName) || stubMode,
+    pollInterval: pollInterval,
+    onCompleted: (data: any) => {
+      setQueryResultOnCompleted(data);
+    }
+  };
+
+  const {loading, error, startPolling, stopPolling} = useCharactersByNameQuery(queryOptions);
 
   /*
     Добавляем "эффект" для старта/остановки опроса сервера, в зависимости

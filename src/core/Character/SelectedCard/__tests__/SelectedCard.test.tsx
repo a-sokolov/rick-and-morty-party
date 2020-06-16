@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import SelectedCard from '../index';
-import {CharacterSelectedCardProperty} from "../interfaces";
+import {CharacterSelectedCardProperty} from '../interfaces';
 
 describe('New SelectedCard', () => {
   const props: CharacterSelectedCardProperty = {
