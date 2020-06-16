@@ -1,0 +1,9 @@
+query getCharactersByName($characterName: String!) {
+    characters(filter: {name: $characterName }) {
+        results {
+            id,
+            name,
+            image
+        }
+    }
+}

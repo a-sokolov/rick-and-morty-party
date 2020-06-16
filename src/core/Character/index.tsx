@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // GraphQL
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 // Common
 import Index from '../common/Progress';
 // Application components
@@ -12,7 +11,7 @@ import { getCharacterStubByName } from './stub';
 import { isValidCharacterName } from '../utils';
 // Entities
 import { Card } from './Card/interfaces';
-import {ScreensCharacterFormProperty} from './interfaces';
+import {getCharactersByNameQuery, ScreensCharacterFormProperty} from './interfaces';
 
 function ScreensCharacterForm({
       characterName
@@ -46,21 +45,8 @@ function ScreensCharacterForm({
     }
   };
 
-  // Запрос поиска персонажей по имени
-  const GET_CHARACTERS_QUERY = gql`
-    query Characters($characterName: String!) {
-      characters(filter: {name: $characterName }) {
-        results {
-          id,
-          name,
-          image
-        }
-      }
-    }
-  `;
-
   // Выполняем запрос
-  const { loading, error, startPolling, stopPolling } = useQuery(GET_CHARACTERS_QUERY, {
+  const { loading, error, startPolling, stopPolling } = useQuery(getCharactersByNameQuery, {
       variables: { characterName },
       skip: !isValidCharacterName(characterName) || stubMode,
       pollInterval: pollInterval,
