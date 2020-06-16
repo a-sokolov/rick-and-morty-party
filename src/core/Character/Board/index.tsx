@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 // Application components
 import CharacterCard from '../Card';
 import CharacterParty from '../Party';
 // Utils
-import { removeItemsFromCollection } from '../../utils';
+import {removeItemsFromCollection} from '../../utils';
 // Entities
-import { Card } from '../Card/interfaces';
-import {CharacterBoardProperty} from "./interfaces";
-import {CharacterListStyled, PartyHeadStyled} from './styles';
+import {Card} from '../Card/interfaces';
+import {CharacterBoardProperty} from './interfaces';
+import {
+  CharacterListStyled,
+  PartyHeadStyled
+} from './styles';
 // Картинка-заглушка
 const skeleton = require('./img/skeleton.jpeg');
 
-function CharacterBoard({
-      list
-    }: CharacterBoardProperty) {
+function CharacterBoard({list}: CharacterBoardProperty) {
   // Карточки указанных Рика и Морти
   const [rickImage, setRickImage] = useState<string>(skeleton);
   const [mortyImage, setMortyImage] = useState<string>(skeleton);
@@ -59,8 +60,8 @@ function CharacterBoard({
                       <CharacterCard
                         key={item.id}
                         item={item}
-                        onSelect={ handleSelectCardByItem }
-                        onDelete={ handleDeleteCardByItem }
+                        onSelect={handleSelectCardByItem}
+                        onDelete={handleDeleteCardByItem}
                       />
                     ))
                   }

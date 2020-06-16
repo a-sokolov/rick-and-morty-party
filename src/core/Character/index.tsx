@@ -1,44 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 // GraphQL
-import { useQuery } from '@apollo/react-hooks';
+import {useQuery} from '@apollo/react-hooks';
 // Common
 import Index from '../common/Progress';
 // Application components
 import CharacterBoard from './Board';
 // JSON stubs for offline mode
-import { getCharacterStubByName } from './stub';
+import {getCharacterStubByName} from './stub';
 // Utils
-import { isValidCharacterName } from '../utils';
+import {isValidCharacterName} from '../utils';
 // Entities
-import { Card } from './Card/interfaces';
-import {getCharactersByNameQuery, ScreensCharacterFormProperty} from './interfaces';
+import {Card} from './Card/interfaces';
+import {
+  CharactersResultData,
+  getCharactersByNameQuery,
+  ScreensCharacterFormProperty
+} from './interfaces';
 
-function ScreensCharacterForm({
-      characterName
-    }: ScreensCharacterFormProperty) {
+function ScreensCharacterForm({characterName}: ScreensCharacterFormProperty) {
   // Флаг, что читаем данные из заглушки
-  // eslint-disable-next-line no-undef
   const stubMode: boolean = (process.env.REACT_APP_STUB_MODE === "true");
   // Интервал запроса к API в миллисекундах
-  // eslint-disable-next-line no-undef
   const pollInterval: number = Number(process.env.REACT_APP_APOLLO_CLIENT_POLL_INTERVAL);
 
   // Текущая коллекция карточек персонажей (id, name, image)
   const [list, setList] = useState<Array<Card>>([]);
   const [loadingStub, setLoadingStub] = useState<Boolean>(false);
 
-  interface IQueryResult {
-    characters: {
-      results?: Array<Card>
-    }
-  }
-
   // Функция для инициализации списка карточек по results запроса
-  // eslint-disable-next-line
-  const setQueryResultOnCompleted = (data: IQueryResult) => {
-    if (data.characters.results) {
-      setList(data.characters.results);
-      console.log(`Total count is ${data.characters.results.length}`);
+  const setQueryResultOnCompleted = (data: CharactersResultData) => {
+    const list = data.characters?.results;
+    if (list) {
+      setList(list);
+      console.log(`Total count is ${list.length}`);
     } else {
       setList([]);
       console.log("Set empty list");
@@ -84,8 +78,8 @@ function ScreensCharacterForm({
   // Отображаем данные
   return (
     <div>
-      { (loading || loadingStub) && <Index /> }
-      { error && <p>Error while loading data.</p> }
+      {(loading || loadingStub) && <Index />}
+      {error && <p>Error while loading data.</p>}
       <CharacterBoard list={list} />
     </div>
   );

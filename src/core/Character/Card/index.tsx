@@ -1,20 +1,22 @@
 import React from 'react';
 // Entities
-import { CharacterCardProperty } from './interfaces';
-import Cross from './img/cross.svg';
-import { CharacterCardStyled, ImageStyled, CloseCardButtonStyled, CloseCardButtonIconStyled} from './styles';
+import {CharacterCardProperty} from './interfaces';
+import {
+  CharacterCardStyled,
+  ImageStyled,
+  CloseCardButtonStyled,
+  CloseCardButtonIconStyled
+} from './styles';
 
 // Карточка персонажа, где можно вызвать событие выбора и удаления.
-const CharacterCard = ({
-      item, onSelect, onDelete
-    }: CharacterCardProperty) => {
+const CharacterCard = ({item, onSelect, onDelete}: CharacterCardProperty) => {
   return (
     <CharacterCardStyled>
         <td>
           <ImageStyled
             src={item.image}
             alt={item.name}
-            onClick={ () => onSelect(item) }
+            onClick={() => onSelect(item)}
           />
           <CloseCardButtonStyled onClick={() => onDelete(item)}>
               <CloseCardButtonIconStyled />

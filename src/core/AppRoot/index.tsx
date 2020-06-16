@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 // Application components
 import Character from '../Character';
-import { AppRootStyled, SearchCharacterInputStyled } from './styles';
+import {
+  AppRootStyled,
+  SearchCharacterInputStyled
+} from './styles';
 
 function AppRoot() {
   // Здесь будем хранить имя персонажа, введенного на форме
@@ -20,7 +23,7 @@ function AppRoot() {
         autoFocus
         autoComplete='off'
         placeholder="Enter the Character name"
-        onChange={ handleChange }
+        onChange={handleChange}
         />
         <Character characterName={name} />
     </AppRootStyled>

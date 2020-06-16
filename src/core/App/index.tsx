@@ -1,6 +1,6 @@
 import React from 'react';
 // GraphQL
-import { ApolloProvider } from 'react-apollo';
+import {ApolloProvider} from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 // Application components
 import AppRoot from '../AppRoot';
@@ -11,7 +11,7 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <ApolloProvider client={ client }>
+    <ApolloProvider client={client}>
       <AppRoot />
     </ApolloProvider>
   );

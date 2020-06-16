@@ -4,9 +4,7 @@ import CharacterSelectedCard from '../SelectedCard';
 import {CharacterPartyProperty} from './interfaces';
 import {CharacterPartyStyled} from './styles';
 
-const CharacterParty = ({
-      rick, morty, skeleton
-    }: CharacterPartyProperty) => {
+const CharacterParty = ({rick, morty, skeleton}: CharacterPartyProperty) => {
   return (
     <CharacterPartyStyled>
       <CharacterSelectedCard
