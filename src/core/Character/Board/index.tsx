@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 import CharacterCard from '../Card';
 import CharacterParty from '../Party';
 // Utils
-import { removeItemsFromCollection } from '../../utils/utils';
+import { removeItemsFromCollection } from '../../utils';
 // Entities
 import { Card } from '../Card/interfaces';
 import {CharacterBoardProperty} from "./interfaces";
+import {CharacterListStyled, PartyHeadStyled} from './styles';
 // Картинка-заглушка
 const skeleton = require('./img/skeleton.jpeg');
 
@@ -47,11 +48,11 @@ function CharacterBoard({
   };
 
   return (
-    <div className="characters-board">
+    <>
       {
         listToDisplay.length > 0 ?
           (
-            <table className="characters-list">
+            <CharacterListStyled>
                 <tbody>
                   {
                     listToDisplay.map(item => (
@@ -64,16 +65,16 @@ function CharacterBoard({
                     ))
                   }
                 </tbody>
-            </table>
+            </CharacterListStyled>
           ) : <p>No data found.</p>
         }
-      <p className="party-header"><b>PARTY</b></p>
+      <PartyHeadStyled>PARTY</PartyHeadStyled>
       <CharacterParty
         rick={rickImage}
         morty={mortyImage}
         skeleton={skeleton}
       />
-    </div>
+    </>
   );
 }
 

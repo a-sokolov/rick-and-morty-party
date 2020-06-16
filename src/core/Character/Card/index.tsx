@@ -2,26 +2,25 @@ import React from 'react';
 // Entities
 import { CharacterCardProperty } from './interfaces';
 import Cross from './img/cross.svg';
+import { CharacterCardStyled, ImageStyled, CloseCardButtonStyled, CloseCardButtonIconStyled} from './styles';
 
 // Карточка персонажа, где можно вызвать событие выбора и удаления.
 const CharacterCard = ({
       item, onSelect, onDelete
     }: CharacterCardProperty) => {
   return (
-    <tr className="character-card">
+    <CharacterCardStyled>
         <td>
-          <img className="card-size"
+          <ImageStyled
             src={item.image}
             alt={item.name}
             onClick={ () => onSelect(item) }
           />
-          <div className="btn-close" onClick={() => onDelete(item)}>
-              <object className="btn-close-image" type="image/svg+xml"
-                  data={Cross}>Your browser does not support SVGs
-              </object>
-          </div>
+          <CloseCardButtonStyled onClick={() => onDelete(item)}>
+              <CloseCardButtonIconStyled />
+          </CloseCardButtonStyled>
         </td>
-    </tr>
+    </CharacterCardStyled>
   );
 };
 

@@ -1,18 +1,19 @@
 import React from 'react';
-import {CharacterSelectedCardProperty} from "./interfaces";
+import {CharacterSelectedCardProperty} from './interfaces';
+import {SelectedCardStyled, CardLabelStyled, SelectedCardImageStyled} from './styles';
 
 // Компонент для отображения выбранной карточки персонажа
 const CharacterSelectedCard = ({
       label, image, skeleton
     }: CharacterSelectedCardProperty) => {
   return (
-    <div className="character-card card-size">
-      <img
+    <SelectedCardStyled>
+      <SelectedCardImageStyled
         src={image}
         alt={label}
       />
-    { image === skeleton && <div className="card-label">{label}</div> }
-    </div>
+      { image === skeleton && <CardLabelStyled>{label}</CardLabelStyled> }
+    </SelectedCardStyled>
   );
 };
 

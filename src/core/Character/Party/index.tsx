@@ -1,13 +1,14 @@
 import React from 'react';
 // Application components
 import CharacterSelectedCard from '../SelectedCard';
-import {CharacterPartyProperty} from "./interfaces";
+import {CharacterPartyProperty} from './interfaces';
+import {CharacterPartyStyled} from './styles';
 
 const CharacterParty = ({
       rick, morty, skeleton
     }: CharacterPartyProperty) => {
   return (
-    <div className="characters-party">
+    <CharacterPartyStyled>
       <CharacterSelectedCard
         label="RICK"
         image={rick}
@@ -18,7 +19,7 @@ const CharacterParty = ({
         image={morty}
         skeleton={skeleton}
       />
-    </div>
+    </CharacterPartyStyled>
   );
 };
 

@@ -7,14 +7,12 @@ import Index from '../common/Progress';
 // Application components
 import CharacterBoard from './Board';
 // JSON stubs for offline mode
-import { getCharacterStubByName } from './stub/index';
+import { getCharacterStubByName } from './stub';
 // Utils
-import { isValidCharacterName } from '../utils/utils';
+import { isValidCharacterName } from '../utils';
 // Entities
 import { Card } from './Card/interfaces';
-// CSS
-import './character.css';
-import {ScreensCharacterFormProperty} from "./interfaces";
+import {ScreensCharacterFormProperty} from './interfaces';
 
 function ScreensCharacterForm({
       characterName
