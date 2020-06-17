@@ -79,11 +79,11 @@ function ScreensCharacterForm({characterName}: ScreensCharacterFormProperty) {
 
   // Отображаем данные
   return (
-    <div>
+    <>
       {(loading || loadingStub) && <Index />}
       {error && <p>Error while loading data.</p>}
       <CharacterBoard list={list} />
-    </div>
+    </>
   );
 }
 
