@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
 import {ReactComponent as CrossIcon} from './img/cross.svg';
 
 export const cardSize = css`
@@ -7,7 +7,53 @@ export const cardSize = css`
 `;
 
 export const ImageStyled = styled.img`
-  ${cardSize}
+  ${cardSize};
+  transition: 200ms ease;
+  :hover {
+    transform: scale(1.05);
+  }
+`;
+
+const shake = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  
+  25% {
+    transform: rotate(10deg);
+  }
+  
+  50% {
+    transform: rotate(-10deg);
+  }
+  
+  75% {
+    transform: rotate(10deg);
+  }
+  
+  100% {
+    transform: rotate(0deg);
+  }
+`;
+
+const fade = keyframes`
+  from {
+    transform: scale();
+  }
+  
+  to {
+    transform: scale(0);
+  }
+`;
+
+export interface AnimatedImageProps {
+  animate?: boolean;
+  deleted?: boolean;
+}
+
+export const AnimatedImageStyled = styled(ImageStyled)<AnimatedImageProps>`
+  animation: 200ms linear;
+  animation-name: ${props => props.animate ? shake : props.deleted ? fade : 'none'};
 `;
 
 export const CloseCardButtonIconStyled = styled(CrossIcon)`
@@ -27,7 +73,9 @@ export const CloseCardButtonStyled = styled.div`
   opacity: 90%;
   width: 30px;
   height: 30px;
+  transition: 300ms ease;
   :hover {
+    transform: rotate(180deg);
     background-color: gray;
   }
 `;

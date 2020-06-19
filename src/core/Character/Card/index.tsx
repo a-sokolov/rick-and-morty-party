@@ -1,29 +1,42 @@
-import React from 'react';
+import React, {useState} from 'react';
 // Entities
 import {CharacterCardProperty} from './interfaces';
 import {
   CharacterCardStyled,
-  ImageStyled,
   CloseCardButtonStyled,
-  CloseCardButtonIconStyled
+  CloseCardButtonIconStyled,
+  AnimatedImageStyled
 } from './styles';
 
 // Карточка персонажа, где можно вызвать событие выбора и удаления.
-const CharacterCard = ({item, onSelect, onDelete}: CharacterCardProperty) => {
+function CharacterCard ({item, onSelect, onDelete}: CharacterCardProperty) {
+  const [selected, setSelected] = useState(false);
+  const [deleted, setDeleted] = useState(false);
+
   return (
     <CharacterCardStyled>
-        <td>
-          <ImageStyled
-            src={item.image}
-            alt={item.name}
-            onClick={() => onSelect(item)}
-          />
-          <CloseCardButtonStyled onClick={() => onDelete(item)}>
-              <CloseCardButtonIconStyled />
-          </CloseCardButtonStyled>
-        </td>
+      <td>
+        <AnimatedImageStyled
+          src={item.image}
+          alt={item.name}
+          onClick={() => {
+            onSelect(item)
+            setSelected(true)
+          }}
+          onAnimationEnd={() => setSelected(false)}
+          animate={selected}
+          deleted={deleted}
+        />
+        <CloseCardButtonStyled
+            onClick={() => {
+                setTimeout(() => onDelete(item), 200);
+                setDeleted(true);
+            }}>
+            <CloseCardButtonIconStyled />
+        </CloseCardButtonStyled>
+      </td>
     </CharacterCardStyled>
   );
-};
+}
 
 export default CharacterCard;
